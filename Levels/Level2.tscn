@@ -7,6 +7,10 @@
 
 [node name="Node2D" type="Node2D"]
 
+[node name="2" type="Sprite" parent="."]
+position = Vector2( 245, 161 )
+texture = ExtResource( 2 )
+
 [node name="PlanetHolder" type="Node2D" parent="."]
 
 [node name="Planet_Static" parent="PlanetHolder" instance=ExtResource( 3 )]
@@ -35,12 +39,9 @@ radius = 150.0
 
 [node name="Goal" parent="PlanetHolder" instance=ExtResource( 4 )]
 position = Vector2( 133, 312 )
+scale = Vector2( 0.6, 0.6 )
 falloff = 0.026
 grav = 700.0
 
 [node name="Ball" parent="." instance=ExtResource( 1 )]
-position = Vector2( 864, 37 )
-
-[node name="2" type="Sprite" parent="."]
-position = Vector2( 245, 161 )
-texture = ExtResource( 2 )
+position = Vector2( 883, 37 )

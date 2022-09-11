@@ -6,18 +6,32 @@ extends RigidBody2D
 # var b = "text"
 
 var isGrounded = false
+var aimVector
 
-var STRENGTH = 700
+var MAX_STRENGTH = 700
+var MIN_STRENGTH = 200
+var AIM_DIST_SCALE = 1.5
+var LINE_SCALE = 0.5
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
+func _process(delta):
+	$TrajectoryLine.visible = isGrounded
+	aimVector = (get_global_mouse_position() - position) * AIM_DIST_SCALE
+	if aimVector.length() > MAX_STRENGTH:
+		aimVector = aimVector.normalized() * MAX_STRENGTH
+	elif aimVector.length() < MIN_STRENGTH:
+		aimVector = aimVector.normalized() * MIN_STRENGTH
+	$TrajectoryLine.points[1] = aimVector * LINE_SCALE
+	$TrajectoryLine.global_rotation_degrees = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	if (Input.is_action_just_pressed("fire")):
-		apply_central_impulse((get_global_mouse_position() - position).normalized() * STRENGTH)
+	if (Input.is_action_just_pressed("fire") and isGrounded):
+		
+		apply_central_impulse(aimVector)
 
 var curPlanet
 
@@ -32,14 +46,14 @@ func _on_Area2D_body_exited(body):
 	$Area2D/Timer.stop()
 	if isGrounded == true and curPlanet == body:
 		isGrounded = false
-		print("taking off")
+#		print("taking off")
 		curPlanet.get_node("GravityArea").set_collision_layer_bit(3, false)
 		set_collision_mask_bit(2, true)
 		set_collision_mask_bit(3, false)
 
 
 func _on_Timer_timeout():
-	print("landed")
+#	print("landed")
 	isGrounded = true
 	curPlanet.get_node("GravityArea").set_collision_layer_bit(3, true)
 	set_collision_mask_bit(2, false)
