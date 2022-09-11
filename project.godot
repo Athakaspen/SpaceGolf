@@ -19,6 +19,7 @@ config/icon="res://Sprites/icon.png"
 UUID="*res://Scripts/MyNetworking/UUID.gd"
 Notifications="*res://Scenes/MyNetworking/Notifications.tscn"
 NetworkManager="*res://Scripts/MyNetworking/NetworkManager.gd"
+LobbyService="*res://Scripts/MyNetworking/LobbyService.gd"
 
 [gui]
 

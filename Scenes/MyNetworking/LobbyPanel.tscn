@@ -8,10 +8,8 @@ script/source = "extends PanelContainer
 #func _ready():
 #	pass # Replace with function body.
 
-var ID = -1
-
 func updateData(lobbyData):
-	$HBoxContainer/ID.text = str(ID)
+	$HBoxContainer/ID.text = name
 	$HBoxContainer/Name.text = lobbyData[0]
 	$HBoxContainer/NumPlayers.text = str(lobbyData[1]) + \"/\" + str(lobbyData[2])
 

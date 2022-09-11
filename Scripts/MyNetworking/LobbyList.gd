@@ -7,7 +7,7 @@ func _ready():
 
 
 func _on_Refresh_pressed():
-	NetworkManager.request_lobby_data()
+	NetworkManager.rq_lobby_data()
 
 
 func _on_Back_pressed():
@@ -18,19 +18,25 @@ func _on_ConnectionCheckTimer_timeout():
 	if(NetworkManager.isConnected):
 		$Connecting.visible = false
 
+func _on_CreateLobby_pressed():
+	NetworkManager.create_lobby
+	pass # Replace with function body.
+
 func on_new_lobby_data(lobbyData):
 	# update from data
 	for id in lobbyData:
-		var panel = $LobbyList.get_node(id)
+		var panel = $LobbyList/VBoxContainer.get_node(id)
 		if panel == null:
 			# Create new panel
 			panel = LOBBY_PANEL_SCENE.instance()
-			panel.ID = id
-			$LobbyList.add_child(panel)
+			panel.name = id
+			$LobbyList/VBoxContainer.add_child(panel)
 		# update data on panel
 		panel.updateData(lobbyData[id])
 	
 	# remove panels not in latest data
-	for panel in $LobbyList.get_children():
+	for panel in $LobbyList/VBoxContainer.get_children():
 		if not panel.name in lobbyData.keys():
 			panel.queue_free()
+
+

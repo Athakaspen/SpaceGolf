@@ -65,7 +65,7 @@ func _on_connected_to_server():
 	isConnected = true
 
 # Client calls this to initiate a data transfer
-func request_lobby_data():
+func rq_lobby_data():
 	rpc_id(SERVER_ID, "send_lobby_data")
 
 # Runs on server, called by a client who wants a server list
@@ -85,6 +85,13 @@ puppet func receive_lobby_data(lobby_data):
 	print(lobby_data)
 	emit_signal("new_lobby_data", lobby_data)
 
+func rq_create_lobby(lobby_name:String):
+	rpc_id(1, "create_lobby", lobby_name)
+
+master func create_lobby(lobby_name:String):
+	var newLobby = load("res://Scenes/MyNetworking/LobbyInstance.tscn").instance()
+	
+
 # Client calls this to pick a lobby to join
 func join_lobby(lobby_id):
 	pass
@@ -97,7 +104,8 @@ master func start_game():
 # 	In that case, other_player_id is 1 for the server.
 func _on_player_connected(other_player_id):
 	print("Player %s connected" % str(other_player_id))
-	var player_id = get_tree().get_network_unique_id()
+	print("my id is %s" % str(get_tree().get_network_unique_id()))
+#	var player_id = get_tree().get_network_unique_id()
 	
 	# This client asks the server for the new player's data.
 #	if not(get_tree().is_network_server()):
@@ -106,6 +114,7 @@ func _on_player_connected(other_player_id):
 # Notified this client when ANOTHER player disconnects from the same server.
 func _on_player_disconnected(other_player_id):
 	print("Player %s disconnected" % str(other_player_id))
+	print("my id is %s" % str(get_tree().get_network_unique_id()))
 	if players.has(other_player_id):
 		players.erase(other_player_id)
 	# delete any player node in the world
