@@ -15,9 +15,11 @@ var LINE_SCALE = 0.5
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$Nametag.set_as_toplevel(true)
 	pass # Replace with function body.
 
 func _process(delta):
+	$Label.rect_position = global_position + Vector2(-16, -24)
 	$TrajectoryLine.visible = isGrounded
 	aimVector = (get_global_mouse_position() - position) * AIM_DIST_SCALE
 	if aimVector.length() > MAX_STRENGTH:
@@ -33,8 +35,13 @@ func _physics_process(delta):
 		
 		apply_central_impulse(aimVector)
 
-var curPlanet
+func setName(name : String) -> void:
+	$Nametag.text = name
+func setColor(color : Color) -> void:
+	$Sprite.modulate = color
 
+# Functions for checking grounded state
+var curPlanet
 func _on_Area2D_body_entered(body):
 	if (body.is_in_group("Planet")):
 		curPlanet = body
@@ -50,7 +57,6 @@ func _on_Area2D_body_exited(body):
 		curPlanet.get_node("GravityArea").set_collision_layer_bit(3, false)
 		set_collision_mask_bit(2, true)
 		set_collision_mask_bit(3, false)
-
 
 func _on_Timer_timeout():
 #	print("landed")

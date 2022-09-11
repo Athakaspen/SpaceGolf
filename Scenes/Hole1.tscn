@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://LevelObjects/Goal.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/hiicmoon.png" type="Texture" id=2]
+[ext_resource path="res://LevelObjects/Planet_Static.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Sprites/1.png" type="Texture" id=4]
+
+[node name="Hole1" type="Node2D"]
+
+[node name="LevelObjects" type="Node2D" parent="."]
+
+[node name="1" type="Sprite" parent="LevelObjects"]
+position = Vector2( 541, 372 )
+texture = ExtResource( 4 )
+
+[node name="Planet_Static" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 142, 330 )
+density = 1.5
+radius = 104.0
+falloff = 0.012
+
+[node name="Planet_Static2" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 344, 478 )
+density = 1.5
+radius = 78.0
+falloff = 0.012
+
+[node name="Planet_Static3" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 606, 117 )
+density = 1.5
+radius = 108.0
+falloff = 0.012
+
+[node name="Planet_Static4" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 881, 391 )
+density = 7.0
+radius = 44.0
+falloff = 0.03
+
+[node name="Goal" parent="LevelObjects" instance=ExtResource( 1 )]
+position = Vector2( 913, 563 )
+grav = 800
+
+[node name="SpawnPoint" type="Position2D" parent="."]
+position = Vector2( 176, 216 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="SpawnPoint"]
+modulate = Color( 0.992157, 0, 1, 0.270588 )
+scale = Vector2( 0.0166667, 0.0166667 )
+texture = ExtResource( 2 )
