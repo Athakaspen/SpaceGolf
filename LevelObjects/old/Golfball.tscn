@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://PhysicsMaterials/physmat_ball.tres" type="PhysicsMaterial" id=1]
+[ext_resource path="res://Sprites/hiicmoon.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/old/Golfball.gd" type="Script" id=3]
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 0.990909 ), 0.0, 0.0, 0, 0, Vector2( 0.973799, 0.0818182 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CircleShape2D" id=3]
+
+[node name="Golfball" type="RigidBody2D" groups=["Ball"]]
+physics_material_override = ExtResource( 1 )
+gravity_scale = 0.0
+contacts_reported = 1
+contact_monitor = true
+angular_damp = 100.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.0144444, 0.0144444 )
+texture = ExtResource( 2 )
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PoolVector2Array( 0, 0, 100, 0 )
+width_curve = SubResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.12
+one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 3 )
+
+[connection signal="body_entered" from="." to="." method="_on_Golfball_body_entered"]
