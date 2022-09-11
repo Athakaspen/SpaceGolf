@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Sprites/hiicmoon.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Ball.gd" type="Script" id=2]
@@ -12,8 +12,10 @@ radius = 12.0
 [sub_resource type="CircleShape2D" id=6]
 radius = 14.0357
 
+[sub_resource type="Curve" id=7]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.993506, 0.0363636 ), 0.0, 0.0, 0, 0 ]
+
 [node name="Ball" type="RigidBody2D" groups=["Ball"]]
-position = Vector2( 252, 47 )
 collision_layer = 2
 collision_mask = 5
 physics_material_override = SubResource( 5 )
@@ -43,6 +45,10 @@ shape = SubResource( 6 )
 [node name="Timer" type="Timer" parent="Area2D"]
 wait_time = 0.5
 one_shot = true
+
+[node name="TrajectoryLine" type="Line2D" parent="."]
+points = PoolVector2Array( 0, 0, 100, 0 )
+width_curve = SubResource( 7 )
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
