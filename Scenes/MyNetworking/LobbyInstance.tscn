@@ -59,6 +59,7 @@ puppet func change_owner(new_id):
 
 remotesync func erase_player(other_player_id):
 	if players.has(other_player_id):
+		Notifications.notify(\"%s (%s) has left.\" % [players[other_player_id][\"name\"], other_player_id])
 # warning-ignore:return_value_discarded
 		players.erase(other_player_id)
 	var panel = $PlayerPanelHolder.get_node_or_null(str(other_player_id))
@@ -100,18 +101,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="StartGame" type="Button" parent="."]
-margin_left = 700.0
-margin_top = 478.0
-margin_right = 893.0
-margin_bottom = 552.0
+margin_left = 526.0
+margin_top = 477.0
+margin_right = 719.0
+margin_bottom = 551.0
 disabled = true
 text = "Start Game"
 
 [node name="LeaveLobby" type="Button" parent="."]
-margin_left = 183.0
-margin_top = 474.0
-margin_right = 376.0
-margin_bottom = 548.0
+margin_left = 304.0
+margin_top = 477.0
+margin_right = 497.0
+margin_bottom = 551.0
 text = "Leave Lobby"
 
 [connection signal="pressed" from="StartGame" to="." method="_on_StartGame_pressed"]

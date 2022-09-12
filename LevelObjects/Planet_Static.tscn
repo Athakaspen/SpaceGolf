@@ -7,7 +7,7 @@
 bounce = 0.2
 
 [sub_resource type="CircleShape2D" id=5]
-radius = 44.0
+radius = 80.0
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 1395.05

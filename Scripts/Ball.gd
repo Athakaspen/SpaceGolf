@@ -15,6 +15,9 @@ var LINE_SCALE = 0.5
 
 var GAME
 
+var MY_GRAVITY_BIT = 8
+var GLOBAL_GRAVITY_BIT = 2
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Nametag.set_as_toplevel(true)
@@ -77,13 +80,13 @@ func _on_Area2D_body_exited(body):
 	if isGrounded == true and curPlanet == body:
 		isGrounded = false
 #		print("taking off")
-		curPlanet.get_node("GravityArea").set_collision_layer_bit(3, false)
-		set_collision_mask_bit(2, true)
-		set_collision_mask_bit(3, false)
+		curPlanet.get_node("GravityArea").set_collision_layer_bit(MY_GRAVITY_BIT, false)
+		set_collision_mask_bit(GLOBAL_GRAVITY_BIT, true)
+		set_collision_mask_bit(MY_GRAVITY_BIT, false)
 
 func _on_Timer_timeout():
 #	print("landed")
 	isGrounded = true
-	curPlanet.get_node("GravityArea").set_collision_layer_bit(3, true)
-	set_collision_mask_bit(2, false)
-	set_collision_mask_bit(3, true)
+	curPlanet.get_node("GravityArea").set_collision_layer_bit(MY_GRAVITY_BIT, true)
+	set_collision_mask_bit(GLOBAL_GRAVITY_BIT, false)
+	set_collision_mask_bit(MY_GRAVITY_BIT, true)

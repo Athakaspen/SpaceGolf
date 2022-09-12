@@ -34,13 +34,13 @@ margin_right = 712.0
 margin_bottom = 43.0
 
 [node name="ID" type="Label" parent="HBoxContainer"]
+visible = false
 margin_top = 11.0
 margin_right = 53.0
 margin_bottom = 25.0
 text = "LobbyID"
 
 [node name="Name" type="Label" parent="HBoxContainer"]
-margin_left = 57.0
 margin_top = 11.0
 margin_right = 570.0
 margin_bottom = 25.0

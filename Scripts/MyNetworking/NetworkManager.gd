@@ -5,7 +5,7 @@ extends Node
 const DEFAULT_IP = '3.15.188.170'
 const DEFAULT_PORT = 24601
 const DEFAULT_MAX_PLAYERS = 64
-const DEFAULT_CONNECTION_TYPE = "client"
+const DEFAULT_CONNECTION_TYPE = "server"
 const SERVER_ID = 1
 
 var isConnected = false
@@ -142,6 +142,10 @@ func _on_player_disconnected(other_player_id):
 		for lobby in LobbyService.get_children():
 			if other_player_id in lobby.players.keys():
 				lobby.on_player_left(other_player_id)
+				break
+		for game in GameService.get_children():
+			if other_player_id in game.players.keys():
+				game.on_player_left(other_player_id)
 				break
 		if players.has(other_player_id):
 			players.erase(other_player_id)

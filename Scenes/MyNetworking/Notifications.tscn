@@ -26,6 +26,7 @@ func _process(delta):
 
 func notify(text):
 	notifications.push_back(text)
+
 "
 
 [node name="NOTIFICATION" type="Panel"]
@@ -52,6 +53,3 @@ align = 1
 valign = 1
 autowrap = true
 clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
