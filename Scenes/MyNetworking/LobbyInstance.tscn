@@ -16,7 +16,8 @@ func get_cur_players():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	if owner_id == get_tree().get_network_unique_id():
+		$StartGame.disabled = false
 
 remotesync func create_player(other_player_id, data):
 	players[other_player_id] = data
@@ -43,11 +44,22 @@ mastersync func on_player_left(other_player_id):
 		if players.size() == 0:
 			print(\"Lobby Empty, deleting\")
 			self.queue_free()
+			return
+		# If the owner left, make a new player the owner
+		if other_player_id == owner_id:
+			owner_id = players.keys()[0]
 		for id in players.keys():
 			rpc_id(id, \"erase_player\", other_player_id)
+			rpc_id(id, \"change_owner\", owner_id) # update owner just in case
+
+puppet func change_owner(new_id):
+	owner_id = new_id
+	if owner_id == get_tree().get_network_unique_id():
+		$StartGame.disabled = false
 
 remotesync func erase_player(other_player_id):
 	if players.has(other_player_id):
+# warning-ignore:return_value_discarded
 		players.erase(other_player_id)
 	var panel = $PlayerPanelHolder.get_node_or_null(str(other_player_id))
 	if panel != null:
@@ -58,9 +70,24 @@ remotesync func erase_player(other_player_id):
 func _on_LeaveLobby_pressed():
 	rpc_id(1, \"on_player_left\", get_tree().get_network_unique_id())
 	# return to list
+# warning-ignore:return_value_discarded
 	get_tree().change_scene(\"res://Scenes/MyNetworking/LobbyList.tscn\")
 	# remove this lobby from list
 	LobbyService.remove_all_lobbies()
+
+
+func _on_StartGame_pressed():
+	rpc_id(1, \"startGame\")
+master func startGame():
+	# verify room owner started game
+	if get_tree().get_rpc_sender_id() == owner_id:
+		GameService.start_game(players)
+		
+		# remove lobby
+		for id in players.keys():
+			LobbyService.rpc_id(id, \"remove_all_lobbies\")
+		self.queue_free()
+
 "
 
 [node name="LobbyInstance" type="Control"]
@@ -77,6 +104,7 @@ margin_left = 700.0
 margin_top = 478.0
 margin_right = 893.0
 margin_bottom = 552.0
+disabled = true
 text = "Start Game"
 
 [node name="LeaveLobby" type="Button" parent="."]
@@ -86,4 +114,5 @@ margin_right = 376.0
 margin_bottom = 548.0
 text = "Leave Lobby"
 
+[connection signal="pressed" from="StartGame" to="." method="_on_StartGame_pressed"]
 [connection signal="pressed" from="LeaveLobby" to="." method="_on_LeaveLobby_pressed"]

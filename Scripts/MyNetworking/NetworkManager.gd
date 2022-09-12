@@ -25,9 +25,12 @@ func parse_os_args():
 
 func _ready():
 	# Network signals.
-	var e = get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
-	e = get_tree().connect('network_peer_connected', self, '_on_player_connected')
-	e = get_tree().connect('connected_to_server', self, '_on_connected_to_server')
+# warning-ignore:return_value_discarded
+	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
+# warning-ignore:return_value_discarded
+	get_tree().connect('network_peer_connected', self, '_on_player_connected')
+# warning-ignore:return_value_discarded
+	get_tree().connect('connected_to_server', self, '_on_connected_to_server')
 	
 	# Get arguments to check if this is the server.
 	var args = parse_os_args()
@@ -54,6 +57,7 @@ func connect_to_server(player_nickname: String, ip: String = DEFAULT_IP, port: i
 	
 #	print("%s connected." % player_nickname)
 	var peer = NetworkedMultiplayerENet.new()
+	isConnected = false
 	peer.create_client(ip, port)
 	get_tree().set_network_peer(peer)
 
@@ -101,6 +105,8 @@ puppet func svr_create_lobby(lobby_id:String, lobby_name:String, creator_id:int)
 	newLobby.nickname = lobby_name
 	newLobby.owner_id = creator_id
 	LobbyService.add_child(newLobby)
+	GameService.visible = false
+	LobbyService.visible = true
 
 # Client calls this to pick a lobby to join
 func rq_join_lobby(lobby_id:String):
@@ -138,24 +144,10 @@ func _on_player_disconnected(other_player_id):
 				break
 		if players.has(other_player_id):
 			players.erase(other_player_id)
+	# server disconnect (i dont think this works)
 	elif(1==other_player_id):
 		Notifications.notify("Disconnect from server")
+# warning-ignore:return_value_discarded
 		get_tree().change_scene("res://Scenes/MainMenu.tscn")
 		LobbyService.remove_all_lobbies()
 	# delete any player node in the world
-
-# This function is called on the server.
-# Tells the calling_player_id to create the new player (aka requsted_about_player_id).
-#remote func get_player_data(calling_player_id, requested_about_player_id):
-#	if get_tree().is_network_server():
-#		rpc_id(calling_player_id, 'create_player', requested_about_player_id, players[requested_about_player_id])
-
-# This function is called on this client.
-# Create puppet player in this client's game.
-#remote func create_player(other_player_id, data):
-#	players[other_player_id] = data
-#	var new_player = load("res://Scenes/NetworkDemo/Player.tscn").instance()
-#	new_player.set_player_label(data["name"])
-#	new_player.set_name(str(other_player_id))
-#	new_player.set_network_master(other_player_id) # Tell this puppet player that it's being controlled by some other peer.
-#	get_tree().get_root().get_node('World').add_child(new_player)

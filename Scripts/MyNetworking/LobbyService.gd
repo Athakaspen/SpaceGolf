@@ -5,9 +5,10 @@ extends ViewportContainer
 func _ready():
 	set_network_master(1)
 	rect_size = OS.window_size
+	visible = false;
 	pass # Replace with function body.
 
-func remove_all_lobbies():
+puppetsync func remove_all_lobbies():
 	for child in get_children():
 		child.queue_free()
 

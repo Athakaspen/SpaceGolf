@@ -6,16 +6,17 @@
 [sub_resource type="PhysicsMaterial" id=5]
 bounce = 0.3
 
-[sub_resource type="CircleShape2D" id=3]
+[sub_resource type="CircleShape2D" id=8]
 radius = 12.0
 
-[sub_resource type="CircleShape2D" id=6]
+[sub_resource type="CircleShape2D" id=9]
 radius = 14.0357
 
 [sub_resource type="Curve" id=7]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.993506, 0.0363636 ), 0.0, 0.0, 0, 0 ]
 
 [node name="Ball" type="RigidBody2D" groups=["Ball"]]
+z_index = 10
 collision_layer = 2
 collision_mask = 5
 physics_material_override = SubResource( 5 )
@@ -29,7 +30,7 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 modulate = Color( 0.694118, 0.196078, 0.196078, 1 )
-shape = SubResource( 3 )
+shape = SubResource( 8 )
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.0166667, 0.0166667 )
@@ -40,7 +41,7 @@ visible = false
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 6 )
+shape = SubResource( 9 )
 
 [node name="Timer" type="Timer" parent="Area2D"]
 wait_time = 0.5

@@ -11,8 +11,10 @@ func _ready():
 	var args = parse_os_args()
 	match args.get('network_connection_type', NetworkManager.DEFAULT_CONNECTION_TYPE):
 		"server":
+# warning-ignore:return_value_discarded
 			get_tree().change_scene("res://Scenes/MyNetworking/ServerScene.tscn")
 		"client":
+# warning-ignore:return_value_discarded
 			get_tree().change_scene("res://Scenes/MainMenu.tscn")
 
 # Read args from cmd into dict

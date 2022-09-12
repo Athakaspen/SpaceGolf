@@ -13,27 +13,50 @@ var MIN_STRENGTH = 200
 var AIM_DIST_SCALE = 1.5
 var LINE_SCALE = 0.5
 
+var GAME
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Nametag.set_as_toplevel(true)
+	set_process_input(is_network_master())
+	$TrajectoryLine.visible = is_network_master()
+	GAME = $"../.."
 	pass # Replace with function body.
 
-func _process(delta):
-	$Label.rect_position = global_position + Vector2(-16, -24)
-	$TrajectoryLine.visible = isGrounded
-	aimVector = (get_global_mouse_position() - position) * AIM_DIST_SCALE
-	if aimVector.length() > MAX_STRENGTH:
-		aimVector = aimVector.normalized() * MAX_STRENGTH
-	elif aimVector.length() < MIN_STRENGTH:
-		aimVector = aimVector.normalized() * MIN_STRENGTH
-	$TrajectoryLine.points[1] = aimVector * LINE_SCALE
-	$TrajectoryLine.global_rotation_degrees = 0
+func _process(_delta):
+	$Nametag.rect_position = global_position + Vector2(-16, -24)
+	if is_network_master():
+		$TrajectoryLine.visible = isGrounded && is_network_master()
+		aimVector = (get_global_mouse_position() - position) * AIM_DIST_SCALE
+		if aimVector.length() > MAX_STRENGTH:
+			aimVector = aimVector.normalized() * MAX_STRENGTH
+		elif aimVector.length() < MIN_STRENGTH:
+			aimVector = aimVector.normalized() * MIN_STRENGTH
+		$TrajectoryLine.points[1] = aimVector * LINE_SCALE
+		$TrajectoryLine.global_rotation_degrees = 0
+	else:
+		aimVector = Vector2.ZERO
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):
-	if (Input.is_action_just_pressed("fire") and isGrounded):
-		
-		apply_central_impulse(aimVector)
+func _physics_process(_delta):
+	if is_network_master():
+		if (Input.is_action_just_pressed("fire") and isGrounded):
+			apply_central_impulse(aimVector)
+		for id in GAME.players.keys():
+			if id != get_tree().get_network_unique_id():
+				rpc_unreliable_id(id, "update_state", global_position, linear_velocity)
+	else:
+		if goal_position != null:
+			global_position = goal_position
+			linear_velocity = goal_velocity
+			goal_position = null
+			goal_velocity = null
+
+var goal_position = null
+var goal_velocity = null
+puppet func update_state(new_position:Vector2, new_velocity:Vector2):
+	goal_position = new_position
+	goal_velocity = new_velocity
 
 func setName(name : String) -> void:
 	$Nametag.text = name
