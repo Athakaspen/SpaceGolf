@@ -4,7 +4,7 @@ extends Node
 const DEFAULT_IP = '127.0.0.1'
 const DEFAULT_PORT = 24601
 const DEFAULT_MAX_PLAYERS = 64
-const DEFAULT_CONNECTION_TYPE = "client"
+const DEFAULT_CONNECTION_TYPE = "server"
 const SERVER_ID = 1
 
 var isConnected = false
@@ -25,9 +25,9 @@ func parse_os_args():
 
 func _ready():
 	# Network signals.
-	get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
-	get_tree().connect('network_peer_connected', self, '_on_player_connected')
-	get_tree().connect('connected_to_server', self, '_on_connected_to_server')
+	var e = get_tree().connect('network_peer_disconnected', self, '_on_player_disconnected')
+	e = get_tree().connect('network_peer_connected', self, '_on_player_connected')
+	e = get_tree().connect('connected_to_server', self, '_on_connected_to_server')
 	
 	# Get arguments to check if this is the server.
 	var args = parse_os_args()
@@ -56,13 +56,15 @@ func connect_to_server(player_nickname: String, ip: String = DEFAULT_IP, port: i
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(ip, port)
 	get_tree().set_network_peer(peer)
-	
-#	get_tree().get_root().get_node('World').create_player(player_nickname)
 
 # Called when THIS client successfully connects to the server.
 func _on_connected_to_server():
 	Notifications.notify("Connection Successful")
+	rpc_id(1, "register_player", my_data)
 	isConnected = true
+
+master func register_player(data):
+	players[get_tree().get_rpc_sender_id()] = data
 
 # Client calls this to initiate a data transfer
 func rq_lobby_data():
@@ -70,15 +72,8 @@ func rq_lobby_data():
 
 # Runs on server, called by a client who wants a server list
 master func send_lobby_data():
-	print("Master send_lobby_data")
-	var ServerScene = $"../ServerScene"
-	if ServerScene != null and ServerScene.has_method("get_lobby_data"):
-		# Actually sending data now
-		var lobby_data = ServerScene.get_lobby_data()
-		rpc_id(get_tree().get_rpc_sender_id(), "receive_lobby_data", lobby_data)
-		print("Client RPC'd from server")
-	else:
-		print("ERROR: ServerScene not found")
+	var lobby_data = LobbyService.get_lobby_data()
+	rpc_id(get_tree().get_rpc_sender_id(), "receive_lobby_data", lobby_data)
 
 # Runs on client, called by server (in send_lobby_data)
 puppet func receive_lobby_data(lobby_data):
@@ -86,15 +81,37 @@ puppet func receive_lobby_data(lobby_data):
 	emit_signal("new_lobby_data", lobby_data)
 
 func rq_create_lobby(lobby_name:String):
-	rpc_id(1, "create_lobby", lobby_name)
+	rpc_id(1, "create_lobby", lobby_name, get_tree().get_network_unique_id())
 
-master func create_lobby(lobby_name:String):
+# Runs on server, creates the lobby
+master func create_lobby(lobby_name:String, creator_id:int):
 	var newLobby = load("res://Scenes/MyNetworking/LobbyInstance.tscn").instance()
-	
+	var lobby_id = UUID.NewID()
+	newLobby.name = lobby_id
+	newLobby.nickname = lobby_name
+	newLobby.owner_id = creator_id
+	LobbyService.add_child(newLobby)
+	rpc_id(creator_id, "svr_create_lobby", lobby_id, lobby_name, creator_id)
+	newLobby.on_player_joined(creator_id, players[creator_id])
+
+# Called by server on clients to put them in a lobby
+puppet func svr_create_lobby(lobby_id:String, lobby_name:String, creator_id:int):
+	var newLobby = load("res://Scenes/MyNetworking/LobbyInstance.tscn").instance()
+	newLobby.name = lobby_id
+	newLobby.nickname = lobby_name
+	newLobby.owner_id = creator_id
+	LobbyService.add_child(newLobby)
 
 # Client calls this to pick a lobby to join
-func join_lobby(lobby_id):
-	pass
+func rq_join_lobby(lobby_id:String):
+	rpc_id(1, "join_lobby", lobby_id)
+
+master func join_lobby(lobby_id:String):
+	var player_id = get_tree().get_rpc_sender_id()
+	var lobby = LobbyService.get_node_or_null(lobby_id)
+	if lobby == null: print("Attempt to join nonexistent lobby")
+	rpc_id(player_id, "svr_create_lobby", lobby_id, lobby.nickname, lobby.owner_id)
+	lobby.on_player_joined(player_id, players[player_id])
 
 master func start_game():
 	pass # it's time
@@ -114,9 +131,17 @@ func _on_player_connected(other_player_id):
 # Notified this client when ANOTHER player disconnects from the same server.
 func _on_player_disconnected(other_player_id):
 	print("Player %s disconnected" % str(other_player_id))
-	print("my id is %s" % str(get_tree().get_network_unique_id()))
-	if players.has(other_player_id):
-		players.erase(other_player_id)
+	if(is_network_master()):
+		for lobby in LobbyService.get_children():
+			if other_player_id in lobby.players.keys():
+				lobby.on_player_left(other_player_id)
+				break
+		if players.has(other_player_id):
+			players.erase(other_player_id)
+	elif(1==other_player_id):
+		Notifications.notify("Disconnect from server")
+		get_tree().change_scene("res://Scenes/MainMenu.tscn")
+		LobbyService.remove_all_lobbies()
 	# delete any player node in the world
 
 # This function is called on the server.

@@ -4,18 +4,20 @@
 script/source = "extends PanelContainer
 
 
-# Called when the node enters the scene tree for the first time.
-#func _ready():
-#	pass # Replace with function body.
+signal JoinButton_pressed(lobby_id)
 
 func updateData(lobbyData):
 	$HBoxContainer/ID.text = name
-	$HBoxContainer/Name.text = lobbyData[0]
-	$HBoxContainer/NumPlayers.text = str(lobbyData[1]) + \"/\" + str(lobbyData[2])
+	$HBoxContainer/Name.text = lobbyData[\"name\"]
+	$HBoxContainer/NumPlayers.text = str(lobbyData[\"cur_players\"]) + \"/\" + str(lobbyData[\"max_players\"])
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_JoinButton_pressed():
+	emit_signal(\"JoinButton_pressed\", name)
 "
 
 [node name="LobbyPanel" type="PanelContainer"]
@@ -59,3 +61,5 @@ margin_left = 628.0
 margin_right = 705.0
 margin_bottom = 36.0
 text = "Join Lobby"
+
+[connection signal="pressed" from="HBoxContainer/JoinButton" to="." method="_on_JoinButton_pressed"]

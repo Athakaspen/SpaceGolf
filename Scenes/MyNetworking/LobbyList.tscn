@@ -44,7 +44,7 @@ margin_right = 560.0
 margin_bottom = 434.0
 text = "Refresh"
 
-[node name="LineEdit" type="LineEdit" parent="."]
+[node name="NewLobbyName" type="LineEdit" parent="."]
 margin_left = 357.0
 margin_top = 479.0
 margin_right = 601.0
@@ -66,6 +66,14 @@ margin_top = 530.0
 margin_right = 170.0
 margin_bottom = 575.0
 text = "back"
+
+[node name="NoLobbies" type="Label" parent="."]
+visible = false
+margin_left = 423.0
+margin_top = 71.0
+margin_right = 536.0
+margin_bottom = 85.0
+text = "No lobbies found."
 
 [node name="LobbyList" type="ScrollContainer" parent="."]
 margin_left = 125.0

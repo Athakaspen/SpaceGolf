@@ -8,7 +8,7 @@ func _on_Offline_pressed():
 
 func _on_Online_pressed():
 	var name = $EnterName.text
-	if name == "": name = UUID.NewID()
+	if name == "": name = "Anonymous"
 	
 	# Get IP and port info
 	var IP = $EnterIP.text
@@ -19,7 +19,7 @@ func _on_Online_pressed():
 		NetworkManager.connect_to_server(name)
 	else:
 		NetworkManager.connect_to_server(name, IP, port)
-	
+	print("changing scene")
 	get_tree().change_scene("res://Scenes/MyNetworking/LobbyList.tscn")
 
 

@@ -1,22 +1,89 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Scenes/MyNetworking/PlayerPanel.tscn" type="PackedScene" id=1]
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+var nickname:String
+var max_players:int = 8
+
+var owner_id:int = -1
+
+var players:Dictionary = {}
+var my_data = {'name': null, 'transform': null}
+
+func get_cur_players():
+	return players.size()
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+remotesync func create_player(other_player_id, data):
+	players[other_player_id] = data
+	var new_panel = load(\"res://Scenes/MyNetworking/PlayerPanel.tscn\").instance()
+	new_panel.name = str(other_player_id)
+	new_panel.updateData(data)
+	new_panel.set_network_master(other_player_id)
+	$PlayerPanelHolder.add_child(new_panel)
+
+func on_player_joined(new_player_id, data):
+	# Only called by server
+	if is_network_master():
+		for id in players.keys():
+			rpc_id(new_player_id, \"create_player\", id, players[id])
+		players[new_player_id] = data
+		for id in players.keys():
+			rpc_id(id, \"create_player\", new_player_id, data)
+		create_player(new_player_id, data)
+
+mastersync func on_player_left(other_player_id):
+	# Only called by server
+	if is_network_master():
+		erase_player(other_player_id)
+		if players.size() == 0:
+			print(\"Lobby Empty, deleting\")
+			self.queue_free()
+		for id in players.keys():
+			rpc_id(id, \"erase_player\", other_player_id)
+
+remotesync func erase_player(other_player_id):
+	if players.has(other_player_id):
+		players.erase(other_player_id)
+	var panel = $PlayerPanelHolder.get_node_or_null(str(other_player_id))
+	if panel != null:
+		panel.queue_free()
+
+
+
+func _on_LeaveLobby_pressed():
+	rpc_id(1, \"on_player_left\", get_tree().get_network_unique_id())
+	# return to list
+	get_tree().change_scene(\"res://Scenes/MyNetworking/LobbyList.tscn\")
+	# remove this lobby from list
+	LobbyService.remove_all_lobbies()
+"
 
 [node name="LobbyInstance" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = SubResource( 1 )
 
 [node name="PlayerPanelHolder" type="HFlowContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="PlayerPanel" parent="PlayerPanelHolder" instance=ExtResource( 1 )]
-margin_left = 0.0
-margin_top = 0.0
-
-[node name="Button" type="Button" parent="."]
-margin_left = 403.0
-margin_top = 482.0
-margin_right = 596.0
-margin_bottom = 556.0
+[node name="StartGame" type="Button" parent="."]
+margin_left = 700.0
+margin_top = 478.0
+margin_right = 893.0
+margin_bottom = 552.0
 text = "Start Game"
+
+[node name="LeaveLobby" type="Button" parent="."]
+margin_left = 183.0
+margin_top = 474.0
+margin_right = 376.0
+margin_bottom = 548.0
+text = "Leave Lobby"
+
+[connection signal="pressed" from="LeaveLobby" to="." method="_on_LeaveLobby_pressed"]

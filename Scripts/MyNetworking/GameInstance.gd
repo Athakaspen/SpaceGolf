@@ -26,7 +26,7 @@ func create_player(name : String = "UNNAMED", color : Color = Color.white):
 	var newPlayer = PLAYER_SCENE.instance()
 	newPlayer.setName(name)
 	newPlayer.setColor(color)
-	$PLAYERS
+	$PLAYERS.add_child(newPlayer)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
