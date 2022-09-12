@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/MyNetworking/ServerScene.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/MyNetworking/GameInstance.tscn" type="PackedScene" id=2]
+
+[node name="ServerScene" type="Node"]
+script = ExtResource( 1 )
+
+[node name="LobbyHolder" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="Lobby" parent="LobbyHolder" instance=ExtResource( 2 )]
+
+[node name="Label" type="Label" parent="."]
+margin_left = 408.0
+margin_top = 156.0
+margin_right = 556.0
+margin_bottom = 170.0
+text = "This is the ServerScene"

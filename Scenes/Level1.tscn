@@ -1,15 +1,15 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://LevelObjects/Ball.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Sprites/1.png" type="Texture" id=2]
+[ext_resource path="res://LevelObjects/Goal.tscn" type="PackedScene" id=1]
+[ext_resource path="res://LevelObjects/Ball.tscn" type="PackedScene" id=2]
 [ext_resource path="res://LevelObjects/Planet_Static.tscn" type="PackedScene" id=3]
-[ext_resource path="res://LevelObjects/Goal.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Sprites/1.png" type="Texture" id=4]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="1" type="Sprite" parent="."]
 position = Vector2( 541, 372 )
-texture = ExtResource( 2 )
+texture = ExtResource( 4 )
 
 [node name="PlanetHolder" type="Node2D" parent="."]
 
@@ -37,9 +37,9 @@ density = 7.0
 radius = 44.0
 falloff = 0.03
 
-[node name="Goal" parent="PlanetHolder" instance=ExtResource( 4 )]
+[node name="Goal" parent="PlanetHolder" instance=ExtResource( 1 )]
 position = Vector2( 913, 563 )
 grav = 800
 
-[node name="Ball" parent="." instance=ExtResource( 1 )]
-position = Vector2( 209, 107 )
+[node name="Ball" parent="." instance=ExtResource( 2 )]
+position = Vector2( 196, 214 )
