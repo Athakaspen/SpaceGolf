@@ -18,8 +18,8 @@ func _on_Online_pressed():
 	if IP == "" or port == "":
 		NetworkManager.connect_to_server(name)
 	else:
-		NetworkManager.connect_to_server(name, IP, port)
-	print("changing scene")
+		NetworkManager.connect_to_server(name, IP, int(port))
+	
 	get_tree().change_scene("res://Scenes/MyNetworking/LobbyList.tscn")
 
 

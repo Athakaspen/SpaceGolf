@@ -1,10 +1,11 @@
 extends Node
 
 # How I ran as a server on GCP:  nohup ./Godot_v3.2.1-stable_linux_server.64 --main-pack SquaresClub.pck --network_connection_type=server &
-const DEFAULT_IP = '127.0.0.1'
+#const DEFAULT_IP = '127.0.0.1'
+const DEFAULT_IP = '3.15.188.170'
 const DEFAULT_PORT = 24601
 const DEFAULT_MAX_PLAYERS = 64
-const DEFAULT_CONNECTION_TYPE = "server"
+const DEFAULT_CONNECTION_TYPE = "client"
 const SERVER_ID = 1
 
 var isConnected = false
@@ -81,7 +82,7 @@ master func send_lobby_data():
 
 # Runs on client, called by server (in send_lobby_data)
 puppet func receive_lobby_data(lobby_data):
-	print(lobby_data)
+#	print(lobby_data)
 	emit_signal("new_lobby_data", lobby_data)
 
 func rq_create_lobby(lobby_name:String):
@@ -127,7 +128,7 @@ master func start_game():
 # 	In that case, other_player_id is 1 for the server.
 func _on_player_connected(other_player_id):
 	print("Player %s connected" % str(other_player_id))
-	print("my id is %s" % str(get_tree().get_network_unique_id()))
+#	print("my id is %s" % str(get_tree().get_network_unique_id()))
 #	var player_id = get_tree().get_network_unique_id()
 	
 	# This client asks the server for the new player's data.
