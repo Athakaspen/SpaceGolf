@@ -18,10 +18,13 @@ margin_top = 116.0
 margin_right = 550.0
 margin_bottom = 130.0
 text = "Following networking tutorials by:
-Urodela Games
-NovemberDev
+Urodela Games (AWS)
+NovemberDev (lobby network system)
 Rainware
-Linko"
+Linko
+
+Additional sources:
+Game Endeavor (offscreen warnings)"
 
 [node name="Button" type="Button" parent="."]
 margin_left = 437.0
