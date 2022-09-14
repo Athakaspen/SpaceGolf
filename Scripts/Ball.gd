@@ -1,12 +1,11 @@
 extends RigidBody2D
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 var isGrounded = false
 var aimVector
+onready var initial_sprite_scale :Vector2 = $Sprite.scale
+
+# How long the ball needs to be in contact with one planet to trigger grounded state
+const GROUNDED_WAIT_TIME = 0.2
 
 var MAX_STRENGTH = 700
 var MIN_STRENGTH = 200
@@ -24,7 +23,6 @@ func _ready():
 	set_process_input(is_network_master())
 	$TrajectoryLine.visible = is_network_master()
 	GAME = $"../.."
-	pass # Replace with function body.
 
 func _process(_delta):
 	$Nametag.rect_position = global_position + Vector2(-16, -24)
@@ -45,9 +43,10 @@ func _physics_process(_delta):
 	if is_network_master():
 		if (Input.is_action_just_pressed("fire") and isGrounded):
 			apply_central_impulse(aimVector)
-		for id in GAME.players.keys():
-			if id != get_tree().get_network_unique_id():
-				rpc_unreliable_id(id, "update_state", global_position, linear_velocity)
+		GAME.rpc_local_unreliable(self, "update_state", [global_position, linear_velocity])
+#		for id in GAME.players.keys():
+#			if id != get_tree().get_network_unique_id():
+#				rpc_unreliable_id(id, "update_state", global_position, linear_velocity)
 	else:
 		if goal_position != null:
 			global_position = goal_position
@@ -55,6 +54,7 @@ func _physics_process(_delta):
 			goal_position = null
 			goal_velocity = null
 
+# Stores latest data from the network until the next physics frame can process it
 var goal_position = null
 var goal_velocity = null
 puppet func update_state(new_position:Vector2, new_velocity:Vector2):
@@ -66,12 +66,35 @@ func setName(name : String) -> void:
 func setColor(color : Color) -> void:
 	$Sprite.modulate = color
 
+func start_win_animation(dur:float):
+#	print("Tweening")
+	$Sprite/Tween.interpolate_property($Sprite, "scale",
+		null, Vector2.ZERO, dur,
+		Tween.TRANS_LINEAR, Tween.EASE_IN)
+	$Sprite/Tween.interpolate_property($Sprite, "rotation_degrees",
+		$Sprite.rotation_degrees, $Sprite.rotation_degrees + 2000, dur,
+		Tween.TRANS_QUAD, Tween.EASE_IN)
+	$Sprite/Tween.start()
+
+func reset_win_animation():
+#	print("Untweening")
+	$Sprite/Tween.stop_all()
+	$Sprite.scale = initial_sprite_scale
+#	print(initial_sprite_scale)
+
+# The goal calls this when the ball collides with it
+func on_win():
+	# only call from the owner client
+	if is_network_master():
+		GAME.on_win()
+		self.visible = false
+
 # Functions for checking grounded state
 var curPlanet
 func _on_Area2D_body_entered(body):
 	if (body.is_in_group("Planet")):
 		curPlanet = body
-		$Area2D/Timer.wait_time = 0.15
+		$Area2D/Timer.wait_time = GROUNDED_WAIT_TIME
 		$Area2D/Timer.start()
 
 func _on_Area2D_body_exited(body):
