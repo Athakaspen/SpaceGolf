@@ -8,19 +8,91 @@ var SERVER_ID = 1
 var PLAYER_SCENE = preload("res://LevelObjects/Ball.tscn")
 
 var players = {}
-var my_data = {'name': null, 'transform': null}
+var players_loaded = []
+var players_finished = []
+var level_sequence = {}
+var cur_level
 
 var spawn_point = Vector2.ZERO
+
+# Send an RPC to every player in this game. Called by player object.
+func rpc_local(calling_player:Node, func_name:String, args:Array = []):
+	for id in [1] + players.keys():
+		if id != get_tree().get_network_unique_id():
+			var arglist = [id, func_name] + args
+			calling_player.callv("rpc_id", arglist)
+
+# Send an Unreliable RPC to every player in this game. Called by player object.
+func rpc_local_unreliable(calling_player:Node, func_name:String, args:Array = []):
+	for id in [1] + players.keys():
+		if id != get_tree().get_network_unique_id():
+			var arglist = [id, func_name] + args
+			calling_player.callv("rpc_unreliable_id", arglist)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
+func init(game_id:String, player_list:Dictionary, level_series:Array):
+	name = game_id
+	players = player_list
+	level_sequence = level_series
+	cur_level = -1
+#	load_level(level_sequence[0])
+
+func start_next_level():
+	# Server Only
+	if !is_network_master(): return
+	
+	if cur_level < level_sequence.size() - 1:
+		goto_next_level()
+		rpc_local(self, "goto_next_level")
+		players_loaded = []
+	else:
+		print("GAME OVER")
+
+puppetsync func goto_next_level():
+	clear_level()
+	cur_level += 1
+	load_level(level_sequence[cur_level])
+
 func load_level(level_path:String):
 	var level = load(level_path).instance()
 	add_child(level)
+	level.get_node("SpawnPoint").visible = false
 	spawn_point = level.get_node("SpawnPoint").position
 	Notifications.notify("Level Loaded")
+	
+	# Tell server we've loaded
+	if !is_network_master():
+		rpc_id(1, "done_preconfiguring")
+
+# Straight from the docs
+master func done_preconfiguring():
+	var who = get_tree().get_rpc_sender_id()
+	# Here are some checks you can do, for example
+	assert(get_tree().is_network_server())
+	assert(who in players.keys()) # Exists
+	assert(not who in players_loaded) # Was not added yet
+
+	players_loaded.append(who)
+
+	if players_loaded.size() == players.size():
+		yield(get_tree().create_timer(1.0), "timeout") # dramatic start
+		spawn_players()
+		rpc_local(self, "spawn_players")
+
+# Remove all existing level data from the game instance
+func clear_level():
+	players_finished = []
+	for child in get_children():
+		if child.name == "PLAYERS":
+			# clear players but keep parent node
+			for chchild in child.get_children():
+				chchild.queue_free()
+		else:
+			# Remove anythine else
+			child.queue_free()
 
 puppetsync func spawn_players():
 	var grav_bit = 8
@@ -61,6 +133,17 @@ remotesync func erase_player(other_player_id):
 	if ball != null:
 		ball.queue_free()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func on_win():
+	rpc_id(1, "register_completion")
+
+master func register_completion():
+	var player_id = get_tree().get_rpc_sender_id()
+	if player_id in players_finished: return
+	players_finished.append(player_id)
+	rpc_local(self, "update_completion", [players_finished])
+	
+	if players_finished.size() == players.size():
+		start_next_level()
+
+puppet func update_completion(new_data):
+	players_finished = new_data

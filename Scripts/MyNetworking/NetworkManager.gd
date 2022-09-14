@@ -1,8 +1,8 @@
 extends Node
 
 # How I ran as a server on GCP:  nohup ./Godot_v3.2.1-stable_linux_server.64 --main-pack SquaresClub.pck --network_connection_type=server &
-#const DEFAULT_IP = '127.0.0.1'
-const DEFAULT_IP = '3.15.188.170'
+const DEFAULT_IP = '127.0.0.1'
+#const DEFAULT_IP = '3.15.188.170'
 const DEFAULT_PORT = 24601
 const DEFAULT_MAX_PLAYERS = 64
 const DEFAULT_CONNECTION_TYPE = "server"
@@ -119,9 +119,6 @@ master func join_lobby(lobby_id:String):
 	if lobby == null: print("Attempt to join nonexistent lobby")
 	rpc_id(player_id, "svr_create_lobby", lobby_id, lobby.nickname, lobby.owner_id)
 	lobby.on_player_joined(player_id, players[player_id])
-
-master func start_game():
-	pass # it's time
 
 # Notifies this client when ANOTHER player connects to the same server. 
 # This also gets called for the server, but we don't do much with that. 
