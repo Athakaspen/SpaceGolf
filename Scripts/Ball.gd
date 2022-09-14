@@ -3,6 +3,7 @@ extends RigidBody2D
 var isGrounded = false
 var aimVector
 onready var initial_sprite_scale :Vector2 = $Sprite.scale
+onready var trail : Line2D = $Trail
 
 # How long the ball needs to be in contact with one planet to trigger grounded state
 const GROUNDED_WAIT_TIME = 0.2
@@ -11,6 +12,7 @@ var MAX_STRENGTH = 700
 var MIN_STRENGTH = 200
 var AIM_DIST_SCALE = 1.5
 var LINE_SCALE = 0.5
+var TRAIL_LENGTH = 40
 
 var GAME
 
@@ -22,6 +24,7 @@ func _ready():
 	$Nametag.set_as_toplevel(true)
 	set_process_input(is_network_master())
 	$TrajectoryLine.visible = is_network_master()
+	trail.set_as_toplevel(true)
 	GAME = $"../.."
 
 func _process(_delta):
@@ -53,6 +56,13 @@ func _physics_process(_delta):
 			linear_velocity = goal_velocity
 			goal_position = null
 			goal_velocity = null
+	
+	update_trail()
+
+func update_trail():
+	trail.add_point(global_position, 0)
+	if trail.get_point_count() > TRAIL_LENGTH:
+		trail.remove_point(TRAIL_LENGTH)
 
 # Stores latest data from the network until the next physics frame can process it
 var goal_position = null
