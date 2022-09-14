@@ -35,7 +35,7 @@ func rpc_local_unreliable(calling_player:Node, func_name:String, args:Array = []
 func _ready():
 	pass # Replace with function body.
 
-func init(game_id:String, player_list:Dictionary, level_series:Array):
+func init(game_id:String, player_list:Dictionary, level_series:Array, game_mode:String):
 	name = game_id
 	players = player_list
 	level_sequence = level_series
@@ -143,6 +143,7 @@ remotesync func erase_player(other_player_id):
 
 func on_win():
 	rpc_id(1, "register_completion")
+	camera.focus = null
 
 master func register_completion():
 	var player_id = get_tree().get_rpc_sender_id()

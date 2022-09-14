@@ -98,7 +98,10 @@ func on_win():
 	# only call from the owner client
 	if is_network_master():
 		GAME.on_win()
-		self.visible = false
+		# Make self invisible
+		self.hide()
+		trail.hide()
+		$Nametag.hide()
 
 # Functions for checking grounded state
 var curPlanet

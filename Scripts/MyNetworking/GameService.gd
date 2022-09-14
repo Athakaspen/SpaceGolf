@@ -40,9 +40,10 @@ func start_game(players : Dictionary):
 #	for id in players.keys():
 #		get_node(game_id).rpc_id(id, "spawn_players")
 
-puppetsync func srv_start_game(players : Dictionary, game_id:String, level_sequence: String = "default"):
+puppetsync func srv_start_game(players : Dictionary, game_id:String,
+level_sequence: String = "default", game_mode:String = "free-for-all"):
 	var game = GAME_INSTANCE.instance()
-	game.init(game_id, players, HOLE_SEQUENCES[level_sequence])
+	game.init(game_id, players, HOLE_SEQUENCES[level_sequence], game_mode)
 	self.add_child(game)
 	if !is_network_master():
 		visible = true
