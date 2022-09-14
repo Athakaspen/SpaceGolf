@@ -7,9 +7,9 @@ onready var initial_sprite_scale :Vector2 = $Sprite.scale
 # How long the ball needs to be in contact with one planet to trigger grounded state
 const GROUNDED_WAIT_TIME = 0.2
 
-var MAX_STRENGTH = 700
+var MAX_STRENGTH = 800
 var MIN_STRENGTH = 200
-var AIM_DIST_SCALE = 1.5
+var AIM_DIST_SCALE = 1.8
 var LINE_SCALE = 0.5
 
 var GAME
@@ -29,6 +29,7 @@ func _process(_delta):
 	if is_network_master():
 		$TrajectoryLine.visible = isGrounded && is_network_master()
 		aimVector = (get_global_mouse_position() - position) * AIM_DIST_SCALE
+		# Clamp
 		if aimVector.length() > MAX_STRENGTH:
 			aimVector = aimVector.normalized() * MAX_STRENGTH
 		elif aimVector.length() < MIN_STRENGTH:
@@ -72,7 +73,7 @@ func start_win_animation(dur:float):
 		null, Vector2.ZERO, dur,
 		Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$Sprite/Tween.interpolate_property($Sprite, "rotation_degrees",
-		$Sprite.rotation_degrees, $Sprite.rotation_degrees + 2000, dur,
+		$Sprite.rotation_degrees, $Sprite.rotation_degrees + 1280, dur,
 		Tween.TRANS_QUAD, Tween.EASE_IN)
 	$Sprite/Tween.start()
 

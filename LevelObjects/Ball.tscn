@@ -10,7 +10,7 @@ bounce = 0.3
 radius = 12.0
 
 [sub_resource type="CircleShape2D" id=9]
-radius = 14.0357
+radius = 15.0
 
 [sub_resource type="Curve" id=7]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.993506, 0.0363636 ), 0.0, 0.0, 0, 0 ]

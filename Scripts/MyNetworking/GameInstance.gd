@@ -13,6 +13,8 @@ var players_finished = []
 var level_sequence = {}
 var cur_level
 
+onready var camera = $Camera
+
 var spawn_point = Vector2.ZERO
 
 # Send an RPC to every player in this game. Called by player object.
@@ -60,6 +62,7 @@ func load_level(level_path:String):
 	var level = load(level_path).instance()
 	add_child(level)
 	level.get_node("SpawnPoint").visible = false
+	camera.position = level.get_node("CameraPos").position
 	spawn_point = level.get_node("SpawnPoint").position
 	Notifications.notify("Level Loaded")
 	
@@ -90,6 +93,9 @@ func clear_level():
 			# clear players but keep parent node
 			for chchild in child.get_children():
 				chchild.queue_free()
+		elif child.name == "Camera":
+			# leave camera
+			pass
 		else:
 			# Remove anythine else
 			child.queue_free()
@@ -105,6 +111,8 @@ puppetsync func spawn_players():
 		grav_bit += 1
 		ball.set_network_master(id)
 		$PLAYERS.add_child(ball)
+		if id == get_tree().get_network_unique_id():
+			camera.focus = ball
 
 func create_player(name : String = "UNNAMED", color : Color = Color.white):
 	var newPlayer = PLAYER_SCENE.instance()

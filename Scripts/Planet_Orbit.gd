@@ -1,10 +1,15 @@
 tool
-extends StaticBody2D
+extends KinematicBody2D
 
 const DENSITY_SCALE = 0.01
 export(float, 0.1, 7, 0.1) var density = 1.0;
 export(float, 20, 300, 2) var radius = 80.0 setget set_radius
 export(float, 0.004, 0.03, 0.001) var falloff = 0.01 setget set_falloff
+export(float, 5, 360, 5) var speed = 100.0
+
+onready var parent = $".."
+onready var cur_angle = Vector2.ZERO.angle_to_point(self.position)
+onready var dist = self.position.length()
 
 func set_radius(new_rad):
 	# set the var
@@ -37,6 +42,6 @@ func _ready():
 	update_children()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _physics_process(delta):
+	cur_angle += speed * delta
+	self.position = Vector2.UP.rotated(deg2rad(cur_angle)) * dist
