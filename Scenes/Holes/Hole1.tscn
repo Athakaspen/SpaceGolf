@@ -1,10 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://LevelObjects/Goal.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Sprites/hiicmoon.png" type="Texture" id=2]
 [ext_resource path="res://LevelObjects/Planet_Static.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Sprites/1.png" type="Texture" id=4]
-[ext_resource path="res://LevelObjects/Planet_Orbit.tscn" type="PackedScene" id=5]
 
 [node name="LEVEL" type="Node2D"]
 
@@ -21,29 +19,33 @@ texture = ExtResource( 2 )
 
 [node name="LevelObjects" type="Node2D" parent="."]
 
-[node name="1" type="Sprite" parent="LevelObjects"]
-position = Vector2( 541, 372 )
-texture = ExtResource( 4 )
-
 [node name="Planet_Static" parent="LevelObjects" instance=ExtResource( 3 )]
 position = Vector2( 142, 330 )
 density = 1.5
 radius = 104.0
 
+[node name="Planet_Static7" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 1036, -210 )
+density = 1.5
+radius = 104.0
+
 [node name="Planet_Static2" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 519, 504 )
+position = Vector2( 490, 609 )
 density = 1.5
 radius = 78.0
 
-[node name="Planet_Orbit" parent="LevelObjects/Planet_Static2" instance=ExtResource( 5 )]
-position = Vector2( 102.282, -148.402 )
-density = 6.0
-radius = 36.0
-falloff = 0.02
-speed = 65.0
+[node name="Planet_Static5" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 1139, 158 )
+density = 1.5
+radius = 78.0
 
 [node name="Planet_Static3" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 606, 117 )
+position = Vector2( 622, 90 )
+density = 1.5
+radius = 108.0
+
+[node name="Planet_Static6" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 1233, 571 )
 density = 1.5
 radius = 108.0
 
@@ -52,9 +54,26 @@ position = Vector2( 881, 391 )
 density = 7.0
 radius = 44.0
 
+[node name="Planet_Static9" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 1705, 67 )
+density = 7.0
+radius = 44.0
+
+[node name="Planet_Static8" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 1567, 402 )
+density = 7.0
+radius = 44.0
+
 [node name="Goal" parent="LevelObjects" instance=ExtResource( 1 )]
-position = Vector2( 824, 543 )
+position = Vector2( 1442, 142 )
 grav = 800.0
 
 [node name="CameraPos" type="Camera2D" parent="."]
-position = Vector2( 825, 544 )
+position = Vector2( 1449, 140 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 218.0
+margin_top = 190.0
+margin_right = 266.0
+margin_bottom = 204.0
+text = "LEVLE 1"

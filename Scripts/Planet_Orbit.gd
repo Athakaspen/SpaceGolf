@@ -5,11 +5,12 @@ const DENSITY_SCALE = 0.01
 export(float, 0.1, 7, 0.1) var density = 1.0;
 export(float, 20, 300, 2) var radius = 80.0 setget set_radius
 export(float, 0.004, 0.03, 0.001) var falloff = 0.01 setget set_falloff
-export(float, 5, 360, 5) var speed = 100.0
+export(float, 5, 360, 5) var speed = 70.0
+export(float, 10, 500, 10) var dist = 250.0
+#export var move_in_editor := false
 
 onready var parent = $".."
 onready var cur_angle = Vector2.ZERO.angle_to_point(self.position)
-onready var dist = self.position.length()
 
 func set_radius(new_rad):
 	# set the var
@@ -43,5 +44,6 @@ func _ready():
 
 
 func _physics_process(delta):
-	cur_angle += speed * delta
-	self.position = Vector2.UP.rotated(deg2rad(cur_angle)) * dist
+#	if !Engine.editor_hint or move_in_editor == true:
+		cur_angle += speed * delta
+		self.position = Vector2.UP.rotated(deg2rad(cur_angle)) * dist

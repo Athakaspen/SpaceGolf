@@ -63,7 +63,7 @@ func start_next_level():
 		goto_next_level()
 #		rpc_local(self, "goto_next_level")
 #		players_loaded = []
-		yield(get_tree().create_timer(0.5), "timeout") # dramatic start
+		yield(get_tree().create_timer(1.5), "timeout") # dramatic start
 		spawn_players()
 #		rpc_local(self, "spawn_players")
 #		if game_mode == "turns":

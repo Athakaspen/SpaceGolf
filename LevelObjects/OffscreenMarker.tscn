@@ -33,6 +33,7 @@ func set_marker_rotation(cam_center):
 "
 
 [node name="Marker" type="Node2D"]
+z_index = 20
 script = SubResource( 1 )
 
 [node name="Arrow" type="Sprite" parent="."]

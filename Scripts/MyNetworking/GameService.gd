@@ -5,8 +5,8 @@ var OFFLINE_GAME_INSTANCE = preload("res://Scenes/MyNetworking/GameInstance_Offl
 
 var HOLE_SEQUENCES = {
 	"default":[
-		"res://Scenes/Holes/Hole1.tscn",
-		"res://Scenes/Holes/Hole2.tscn"
+		"res://Scenes/Holes/Hole5.tscn",
+		"res://Scenes/Holes/Hole5.tscn"
 	]
 }
 

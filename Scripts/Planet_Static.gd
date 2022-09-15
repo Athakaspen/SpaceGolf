@@ -3,7 +3,7 @@ extends StaticBody2D
 
 const DENSITY_SCALE = 0.01
 export(float, 0.1, 7, 0.1) var density = 1.0;
-export(float, 20, 300, 2) var radius = 80.0 setget set_radius
+export(float, 20, 400, 2) var radius = 80.0 setget set_radius
 export(float, 0.004, 0.03, 0.001) var falloff = 0.01 setget set_falloff
 
 func set_radius(new_rad):

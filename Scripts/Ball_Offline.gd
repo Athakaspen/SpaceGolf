@@ -14,8 +14,8 @@ const GROUNDED_WAIT_TIME = 0.2
 
 var MAX_STRENGTH = 800
 var MIN_STRENGTH = 200
-var AIM_DIST_SCALE = 1.8
-var LINE_SCALE = 0.5
+var AIM_DIST_SCALE = 2.5
+var LINE_SCALE = 0.42
 var TRAIL_LENGTH = 40
 #var FLIGHT_TIME := 5.0 # time the ball can fly until turn changes
 

@@ -7,7 +7,7 @@
 [node name="LEVEL" type="Node2D"]
 
 [node name="SpawnPoint" type="Position2D" parent="."]
-position = Vector2( 150, 391 )
+position = Vector2( 428, 1050 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -20,71 +20,61 @@ texture = ExtResource( 2 )
 [node name="LevelObjects" type="Node2D" parent="."]
 
 [node name="Planet_Static" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 242, 484 )
+position = Vector2( 178, 350 )
 radius = 104.0
 
-[node name="Planet_Static2" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 376, 20 )
-radius = 150.0
-
 [node name="Planet_Static6" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 1612, 2 )
-density = 0.8
-radius = 240.0
+position = Vector2( 0, 1280 )
+radius = 94.0
 
 [node name="Planet_Static3" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 838, 268 )
-radius = 162.0
-
-[node name="Planet_Static5" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 943, -189 )
-radius = 130.0
+position = Vector2( -340, 1071 )
+radius = 104.0
 
 [node name="Planet_Static4" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 344, 1016 )
-density = 2.0
+position = Vector2( -228, 818 )
+density = 1.5
 radius = 44.0
 
 [node name="Planet_Static12" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 1550, 570 )
-density = 2.0
-radius = 44.0
+position = Vector2( 844, 865 )
+radius = 60.0
 
 [node name="Planet_Static7" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 637, 622 )
-density = 2.0
-radius = 70.0
+position = Vector2( 502, 1208 )
+radius = 130.0
 
 [node name="Planet_Static8" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 1075, 639 )
-density = 2.0
-radius = 82.0
+position = Vector2( 465, 640 )
+radius = 146.0
+
+[node name="Planet_Static13" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( -874, -63 )
+density = 1.2
+radius = 146.0
 
 [node name="Planet_Static9" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 629, 920 )
-density = 2.0
+position = Vector2( -784, 423 )
 radius = 92.0
 
 [node name="Planet_Static10" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 1340, 958 )
-density = 2.0
+position = Vector2( -471, 581 )
 radius = 92.0
 
 [node name="Planet_Static11" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 1320, 479 )
-density = 2.0
+position = Vector2( -188, 160 )
 radius = 68.0
 
 [node name="Goal" parent="LevelObjects" instance=ExtResource( 4 )]
-position = Vector2( 1776, 418 )
+position = Vector2( -577, 189 )
 grav = 800.0
 
 [node name="CameraPos" type="Camera2D" parent="."]
-position = Vector2( 1777, 417 )
+position = Vector2( -579, 205 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = 136.0
-margin_top = 330.0
-margin_right = 184.0
-margin_bottom = 344.0
-text = "LEVLE 2"
+margin_left = 435.0
+margin_top = 1494.0
+margin_right = 483.0
+margin_bottom = 1508.0
+text = "LEVLE 4"
