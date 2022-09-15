@@ -6,7 +6,7 @@
 [ext_resource path="res://Sprites/1.png" type="Texture" id=4]
 [ext_resource path="res://LevelObjects/Planet_Orbit.tscn" type="PackedScene" id=5]
 
-[node name="Hole1" type="Node2D"]
+[node name="LEVEL" type="Node2D"]
 
 [node name="SpawnPoint" type="Position2D" parent="."]
 position = Vector2( 176, 216 )
@@ -36,7 +36,7 @@ density = 1.5
 radius = 78.0
 
 [node name="Planet_Orbit" parent="LevelObjects/Planet_Static2" instance=ExtResource( 5 )]
-position = Vector2( -105.957, 145.801 )
+position = Vector2( 102.282, -148.402 )
 density = 6.0
 radius = 36.0
 falloff = 0.02

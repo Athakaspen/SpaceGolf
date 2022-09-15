@@ -10,10 +10,15 @@ var PLAYER_SCENE = preload("res://LevelObjects/Ball.tscn")
 var players = {}
 var players_loaded = []
 var players_finished = []
+var turn_order = []
+var cur_turn = -1
+var player_scores = {}
 var level_sequence = {}
 var cur_level
+var game_mode : String
 
 onready var camera = $Camera
+onready var UI = $UILayer/UI
 
 var spawn_point = Vector2.ZERO
 
@@ -35,18 +40,28 @@ func rpc_local_unreliable(calling_player:Node, func_name:String, args:Array = []
 func _ready():
 	pass # Replace with function body.
 
-func init(game_id:String, player_list:Dictionary, level_series:Array):
+func init(game_id:String, player_list:Dictionary, level_series:Array, mode:String):
 	name = game_id
 	players = player_list
 	level_sequence = level_series
 	cur_level = -1
-#	load_level(level_sequence[0])
+	game_mode = mode
+	# init scores to 0
+	for id in players.keys():
+		player_scores[id] = 0.0
+	
+	# this only matters on the server
+	turn_order = players.keys()
+#	turn_order.shuffle()
 
 func start_next_level():
 	# Server Only
 	if !is_network_master(): return
 	
 	if cur_level < level_sequence.size() - 1:
+		if game_mode == "free-for-all":
+			UI.hide_timer()
+			rpc_local(UI, "hide_timer")
 		goto_next_level()
 		rpc_local(self, "goto_next_level")
 		players_loaded = []
@@ -56,7 +71,33 @@ func start_next_level():
 puppetsync func goto_next_level():
 	clear_level()
 	cur_level += 1
+	UI.update_scores(players, player_scores)
 	load_level(level_sequence[cur_level])
+
+# Called by client when their turn is done
+master func turn_finished():
+	var next_id = get_next_turn()
+	rpc_local(self, "update_turn", [next_id])
+
+puppet func update_turn(id):
+	UI.update_turn(players[id]["name"])
+	if id == get_tree().get_network_unique_id():
+		$PLAYERS.get_node(str(id)).start_turn()
+
+# Updates internal variables and returns next player ID
+func get_next_turn() -> int:
+	if turn_order.size() <= players_finished.size():
+		# This shouldn't happen, but if it does, I don't want to stack overflow
+		return turn_order[0]
+	cur_turn += 1
+	# loop
+	if cur_turn >= turn_order.size():
+		cur_turn -= turn_order.size()
+	if not turn_order[cur_turn] in players_finished:
+		return turn_order[cur_turn]
+	else:
+		#recursion? in a real project?
+		return get_next_turn()
 
 func load_level(level_path:String):
 	var level = load(level_path).instance()
@@ -64,7 +105,7 @@ func load_level(level_path:String):
 	level.get_node("SpawnPoint").visible = false
 	camera.position = level.get_node("CameraPos").position
 	spawn_point = level.get_node("SpawnPoint").position
-	Notifications.notify("Level Loaded")
+#	Notifications.notify("Level Loaded")
 	
 	# Tell server we've loaded
 	if !is_network_master():
@@ -81,9 +122,12 @@ master func done_preconfiguring():
 	players_loaded.append(who)
 
 	if players_loaded.size() == players.size():
-		yield(get_tree().create_timer(1.0), "timeout") # dramatic start
+		yield(get_tree().create_timer(0.5), "timeout") # dramatic start
 		spawn_players()
 		rpc_local(self, "spawn_players")
+		if game_mode == "turns":
+			yield(get_tree().create_timer(0.5), "timeout") # time to load
+			rpc_local(self, "update_turn", [get_next_turn()])
 
 # Remove all existing level data from the game instance
 func clear_level():
@@ -93,21 +137,18 @@ func clear_level():
 			# clear players but keep parent node
 			for chchild in child.get_children():
 				chchild.queue_free()
-		elif child.name == "Camera":
-			# leave camera
-			pass
-		else:
-			# Remove anythine else
+		elif child.name == "LEVEL":
 			child.queue_free()
+		else:
+			# ignore anythine else
+			pass
 
 puppetsync func spawn_players():
 	var grav_bit = 8
 	for id in players.keys():
 		var ball = PLAYER_SCENE.instance()
-		ball.name = str(id)
+		ball.init(id, spawn_point, grav_bit, game_mode)
 		ball.setName(players[id]["name"])
-		ball.position = spawn_point
-		ball.MY_GRAVITY_BIT = grav_bit
 		grav_bit += 1
 		ball.set_network_master(id)
 		$PLAYERS.add_child(ball)
@@ -141,8 +182,16 @@ remotesync func erase_player(other_player_id):
 	if ball != null:
 		ball.queue_free()
 
+remotesync func log_hit(id):
+	player_scores[id] += 1
+	UI.update_scores(players, player_scores)
+
+remotesync func update_timer(amount):
+	UI.update_timer(amount)
+
 func on_win():
 	rpc_id(1, "register_completion")
+	camera.focus = null
 
 master func register_completion():
 	var player_id = get_tree().get_rpc_sender_id()

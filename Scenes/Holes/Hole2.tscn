@@ -5,7 +5,7 @@
 [ext_resource path="res://LevelObjects/Planet_Static.tscn" type="PackedScene" id=3]
 [ext_resource path="res://LevelObjects/Goal.tscn" type="PackedScene" id=4]
 
-[node name="Hole2" type="Node2D"]
+[node name="LEVEL" type="Node2D"]
 
 [node name="SpawnPoint" type="Position2D" parent="."]
 position = Vector2( 150, 391 )

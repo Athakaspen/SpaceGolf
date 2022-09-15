@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/LevelUI.gd" type="Script" id=1]
+
+[node name="UI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="TurnLabel" type="Label" parent="."]
+margin_left = 33.0
+margin_top = 19.0
+margin_right = 202.0
+margin_bottom = 126.0
+text = "XXX's Turn"
+
+[node name="ScoreLabel" type="Label" parent="."]
+margin_left = 673.0
+margin_top = 25.0
+margin_right = 989.0
+margin_bottom = 174.0
+text = "Trashbag: 69
+Garbage Can: 420"
+align = 2
+
+[node name="TimerBar" type="ProgressBar" parent="."]
+margin_left = 29.0
+margin_top = 565.0
+margin_right = 1000.0
+margin_bottom = 579.0
+max_value = 1.0
+percent_visible = false

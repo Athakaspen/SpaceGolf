@@ -1,5 +1,7 @@
 extends Node
 
+const VERSION_NUM = "0.1.1"
+
 # How I ran as a server on GCP:  nohup ./Godot_v3.2.1-stable_linux_server.64 --main-pack SquaresClub.pck --network_connection_type=server &
 const DEFAULT_IP = '127.0.0.1'
 #const DEFAULT_IP = '3.15.188.170'
@@ -116,7 +118,12 @@ func rq_join_lobby(lobby_id:String):
 master func join_lobby(lobby_id:String):
 	var player_id = get_tree().get_rpc_sender_id()
 	var lobby = LobbyService.get_node_or_null(lobby_id)
-	if lobby == null: print("Attempt to join nonexistent lobby")
+	if lobby == null: 
+		print("Attempt to join nonexistent lobby")
+		return
+	if lobby.get_cur_players() >= lobby.max_players:
+		print("Attempt to join full lobby")
+		return
 	rpc_id(player_id, "svr_create_lobby", lobby_id, lobby.nickname, lobby.owner_id)
 	lobby.on_player_joined(player_id, players[player_id])
 
@@ -125,12 +132,22 @@ master func join_lobby(lobby_id:String):
 # 	In that case, other_player_id is 1 for the server.
 func _on_player_connected(other_player_id):
 	print("Player %s connected" % str(other_player_id))
-#	print("my id is %s" % str(get_tree().get_network_unique_id()))
-#	var player_id = get_tree().get_network_unique_id()
-	
-	# This client asks the server for the new player's data.
-#	if not(get_tree().is_network_server()):
-#		rpc_id(1, 'get_player_data', player_id, other_player_id)
+	if is_network_master():
+		# request version number (perfect security)
+		rpc_id(other_player_id, "send_version")
+
+puppet func send_version():
+	rpc_id(1, "check_version", VERSION_NUM)
+
+master func check_version(version):
+	if version != VERSION_NUM:
+		# Kick this player
+		rpc_id(get_tree().get_rpc_sender_id(), 'kicked', "incorrect game version")
+
+puppet func kicked(reason:String):
+	# Disconnect and display reason
+	get_tree().network_peer = null
+	Notifications.notify("Kicked from server: " + reason)
 
 # Notified this client when ANOTHER player disconnects from the same server.
 func _on_player_disconnected(other_player_id):
