@@ -40,7 +40,16 @@ func _on_Credits_pressed():
 
 
 func _on_ChangeColor_pressed():
-	NetworkManager.my_data["color"] = rand_color()
+	if rand_range(0,100) < 30:
+		#hiicball
+		var ball = load("res://Sprites/hiicball.png")
+		NetworkManager.my_data["sprite"] = ball
+		NetworkManager.my_data["color"] = Color.white
+	else:
+		var ball = load("res://Sprites/ball.png")
+		NetworkManager.my_data["sprite"] = ball
+		NetworkManager.my_data["color"] = rand_color()
+	$PlayerInfo/Sprite.texture = NetworkManager.my_data['sprite']
 	$PlayerInfo/Sprite.modulate = NetworkManager.my_data["color"]
 
 func _on_ChangeTrail_pressed():
@@ -51,7 +60,7 @@ func rand_color() -> Color:
 	return Color(rand_range(0,1),rand_range(0,1),rand_range(0,1))
 
 func rand_trail() -> Gradient:
-	if rand_range(0,100) < 3:
+	if rand_range(0,100) < 30:
 		var grad = load("res://Resources/RainbowGradient.tres")
 		return grad
 	var col = Color(rand_range(0,1),rand_range(0,1),rand_range(0,1))

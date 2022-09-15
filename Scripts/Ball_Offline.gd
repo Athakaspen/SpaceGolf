@@ -142,6 +142,8 @@ func setName(name : String) -> void:
 	$Nametag.text = name
 func setColor(color : Color) -> void:
 	$Sprite.modulate = color
+func setSprite(texture : Texture) -> void:
+	$Sprite.texture = texture
 func setTrail(grad : Gradient) -> void:
 	$Trail.gradient = grad
 

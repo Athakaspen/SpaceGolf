@@ -16,7 +16,8 @@ signal new_lobby_data(lobby_data)
 var players = {}
 var my_data = {
 	'name': 'Anonymous', 
-	'color': Color.white, 
+	'color': Color.white,
+	"sprite": preload("res://Sprites/ball.png"),
 	"trail": preload("res://Resources/TrailGradient.tres")
 }
 

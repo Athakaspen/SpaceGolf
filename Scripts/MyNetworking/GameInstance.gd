@@ -150,6 +150,7 @@ puppetsync func spawn_players():
 		ball.init(id, spawn_point, grav_bit, game_mode)
 		ball.setName(players[id]["name"])
 		ball.setColor(players[id]["color"])
+		ball.setSprite(players[id]["sprite"])
 		ball.setTrail(players[id]["trail"])
 		grav_bit += 1
 		ball.set_network_master(id)
