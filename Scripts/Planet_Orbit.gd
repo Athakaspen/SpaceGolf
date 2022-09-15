@@ -7,10 +7,12 @@ export(float, 20, 300, 2) var radius = 80.0 setget set_radius
 export(float, 0.004, 0.03, 0.001) var falloff = 0.01 setget set_falloff
 export(float, 5, 360, 5) var speed = 70.0
 export(float, 10, 500, 10) var dist = 250.0
-#export var move_in_editor := false
+export var clockwise := true 
+export var move_in_editor := false setget set_MIE
+export(float, 0, 360, 1) var start_angle = 0.0 setget set_start_angle
 
 onready var parent = $".."
-onready var cur_angle = Vector2.ZERO.angle_to_point(self.position)
+onready var cur_angle = start_angle
 
 func set_radius(new_rad):
 	# set the var
@@ -23,6 +25,14 @@ func set_falloff(new_fo):
 	falloff = new_fo
 	if Engine.editor_hint:
 		update_children()
+
+func set_start_angle(new_a):
+	start_angle = new_a
+	self.position = Vector2.UP.rotated(deg2rad(start_angle)) * dist
+
+func set_MIE(val):
+	move_in_editor = val
+	if val == true: cur_angle = start_angle
 
 func update_children():
 	$GravityArea.gravity_distance_scale = falloff
@@ -44,6 +54,6 @@ func _ready():
 
 
 func _physics_process(delta):
-#	if !Engine.editor_hint or move_in_editor == true:
-		cur_angle += speed * delta
+	if !Engine.editor_hint or move_in_editor == true:
+		cur_angle += speed * delta * (1 if clockwise else -1)
 		self.position = Vector2.UP.rotated(deg2rad(cur_angle)) * dist

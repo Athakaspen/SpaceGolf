@@ -6,6 +6,11 @@ func _ready():
 	randomize()
 	GameService.hide()
 	LobbyService.hide()
+	get_tree().network_peer = null # force disconnect
+	update_color()
+	update_trail()
+#	_on_ChangeColor_pressed()
+#	_on_ChangeTrail_pressed()
 
 func _on_Offline_pressed():
 # warning-ignore:return_value_discarded
@@ -40,31 +45,49 @@ func _on_Credits_pressed():
 
 
 func _on_ChangeColor_pressed():
-	if rand_range(0,100) < 30:
-		#hiicball
-		var ball = load("res://Sprites/hiicball.png")
-		NetworkManager.my_data["sprite"] = ball
+	if rand_range(0,100) < 4:
+		# hiic
+		NetworkManager.my_data["sprite"] = 'hiic'
 		NetworkManager.my_data["color"] = Color.white
 	else:
-		var ball = load("res://Sprites/ball.png")
-		NetworkManager.my_data["sprite"] = ball
+		#normal
+		NetworkManager.my_data["sprite"] = 'normal'
 		NetworkManager.my_data["color"] = rand_color()
-	$PlayerInfo/Sprite.texture = NetworkManager.my_data['sprite']
+	update_color()
+
+# update the graphic on the screen
+func update_color():
+	match NetworkManager.my_data["sprite"]:
+		'hiic':
+			$PlayerInfo/Sprite.texture = load("res://Sprites/hiicball.png")
+		'normal':
+			$PlayerInfo/Sprite.texture = load("res://Sprites/ball.png")
 	$PlayerInfo/Sprite.modulate = NetworkManager.my_data["color"]
 
 func _on_ChangeTrail_pressed():
-	NetworkManager.my_data["trail"] = rand_trail()
-	$PlayerInfo/Trail.gradient = NetworkManager.my_data["trail"]
+	if rand_range(0,100) < 3:
+		# rainbow
+		NetworkManager.my_data["trail"] = 'rainbow'
+	else:
+		#normal
+		NetworkManager.my_data["trail"] = 'normal'
+		NetworkManager.my_data["trail_color"] = rand_color()
+	update_trail()
+
+# update the graphic on the screen
+func update_trail():
+	$PlayerInfo/Trail.gradient = get_gradient(NetworkManager.my_data['trail'], NetworkManager.my_data['trail_color'])
 
 func rand_color() -> Color:
 	return Color(rand_range(0,1),rand_range(0,1),rand_range(0,1))
 
-func rand_trail() -> Gradient:
-	if rand_range(0,100) < 30:
-		var grad = load("res://Resources/RainbowGradient.tres")
-		return grad
-	var col = Color(rand_range(0,1),rand_range(0,1),rand_range(0,1))
-	var grad = gradient_res.duplicate(true)
-	for i in range(grad.get_point_count()):
-		grad.set_color(i, Color(col.r, col.g, col.b, grad.get_color(i).a))
-	return grad
+func get_gradient(type:String, col:Color=Color.white) -> Gradient:
+	match type:
+		'rainbow':
+			var grad = load("res://Resources/RainbowGradient.tres")
+			return grad
+		'normal', _:
+			var grad = gradient_res.duplicate(true)
+			for i in range(grad.get_point_count()):
+				grad.set_color(i, Color(col.r, col.g, col.b, grad.get_color(i).a))
+			return grad

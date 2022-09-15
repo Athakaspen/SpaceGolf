@@ -66,16 +66,28 @@ func start_next_level():
 		rpc_local(self, "goto_next_level")
 		players_loaded = []
 	else:
-		print("GAME OVER")
+		print("GAME OVER, deleting")
+		rpc_local(self, "goto_winscreen")
+		self.queue_free()
+
+puppet func goto_winscreen():
+	clear_level()
+	NetworkManager.result_players = players
+	NetworkManager.result_scores = player_scores
+# warning-ignore:return_value_discarded
+	get_tree().change_scene("res://Scenes/WinScreen.tscn")
+	self.queue_free()
 
 puppetsync func goto_next_level():
 	clear_level()
+	yield(get_tree(), "idle_frame") # wait until level is really gone
+	yield(get_tree(), "idle_frame") # wait until level is really gone
 	cur_level += 1
 	UI.update_scores(players, player_scores)
 	load_level(level_sequence[cur_level])
 
 # Called by client when their turn is done
-master func turn_finished():
+mastersync func turn_finished():
 	var next_id = get_next_turn()
 	rpc_local(self, "update_turn", [next_id])
 
@@ -150,13 +162,28 @@ puppetsync func spawn_players():
 		ball.init(id, spawn_point, grav_bit, game_mode)
 		ball.setName(players[id]["name"])
 		ball.setColor(players[id]["color"])
-		ball.setSprite(players[id]["sprite"])
-		ball.setTrail(players[id]["trail"])
+		match players[id]["sprite"]:
+			'normal':
+				ball.setSprite(load("res://Sprites/ball.png"))
+			'hiic':
+				ball.setSprite(load("res://Sprites/hiicball.png"))
+		ball.setTrail(get_gradient(players[id]["trail"], players[id]["trail_color"]))
 		grav_bit += 1
 		ball.set_network_master(id)
 		$PLAYERS.add_child(ball)
 		if id == get_tree().get_network_unique_id():
 			camera.focus = ball
+
+func get_gradient(type:String, col:Color=Color.white) -> Gradient:
+	match type:
+		'rainbow':
+			var grad = load("res://Resources/RainbowGradient.tres")
+			return grad
+		'normal', _:
+			var grad = load("res://Resources/TrailGradient.tres").duplicate(true)
+			for i in range(grad.get_point_count()):
+				grad.set_color(i, Color(col.r, col.g, col.b, grad.get_color(i).a))
+			return grad
 
 func create_player(name : String = "UNNAMED", color : Color = Color.white):
 	var newPlayer = PLAYER_SCENE.instance()
@@ -167,6 +194,11 @@ func create_player(name : String = "UNNAMED", color : Color = Color.white):
 func on_player_left(other_player_id):
 	# Only called by server
 	if is_network_master():
+		var i = turn_order.find(other_player_id)
+		if cur_turn > i:
+			cur_turn -= 1
+		elif cur_turn == i:
+			turn_finished()
 		erase_player(other_player_id)
 		if players.size() == 0:
 			print("Game Empty, deleting")
@@ -181,6 +213,10 @@ remotesync func erase_player(other_player_id):
 		Notifications.notify("%s (%s) has disconnected." % [players[other_player_id]["name"], other_player_id])
 # warning-ignore:return_value_discarded
 		players.erase(other_player_id)
+		player_scores.erase(other_player_id)
+		players_finished.erase(other_player_id)
+		turn_order.erase(other_player_id)
+		UI.update_scores(players, player_scores)
 	var ball = $PLAYERS.get_node_or_null(str(other_player_id))
 	if ball != null:
 		ball.queue_free()

@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+
+
+onready var label = $Label
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	GameService.visible = false
+	update_scores(NetworkManager.result_players, NetworkManager.result_scores)
+
+
+func update_scores(players:Dictionary, player_scores:Dictionary):
+	var text = \"\"
+	for id in player_scores.keys():
+		text += \"%s: %s\\n\" % [players[id][\"name\"], player_scores[id]]
+	label.text = text
+
+
+func _on_MainMenu_pressed():
+	get_tree().change_scene(\"res://Scenes/MainMenu.tscn\")
+"
+
+[node name="WinScreen" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 307.0
+margin_top = 161.0
+margin_right = 618.0
+margin_bottom = 362.0
+text = "[Win Text Here]"
+
+[node name="MainMenu" type="Button" parent="."]
+margin_left = 379.0
+margin_top = 387.0
+margin_right = 626.0
+margin_bottom = 448.0
+text = "Main Menu"
+
+[connection signal="pressed" from="MainMenu" to="." method="_on_MainMenu_pressed"]

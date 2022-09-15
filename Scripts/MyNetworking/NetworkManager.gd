@@ -1,10 +1,10 @@
 extends Node
 
-const VERSION_NUM = "0.1.1"
+const VERSION_NUM = "0.1.4"
 
 # How I ran as a server on GCP:  nohup ./Godot_v3.2.1-stable_linux_server.64 --main-pack SquaresClub.pck --network_connection_type=server &
-const DEFAULT_IP = '127.0.0.1'
-#const DEFAULT_IP = '3.15.188.170'
+#const DEFAULT_IP = '127.0.0.1'
+const DEFAULT_IP = '3.15.188.170'
 const DEFAULT_PORT = 24601
 const DEFAULT_MAX_PLAYERS = 64
 const DEFAULT_CONNECTION_TYPE = "client"
@@ -17,9 +17,14 @@ var players = {}
 var my_data = {
 	'name': 'Anonymous', 
 	'color': Color.white,
-	"sprite": preload("res://Sprites/ball.png"),
-	"trail": preload("res://Resources/TrailGradient.tres")
+	"sprite": 'normal',
+	"trail": 'normal',
+	"trail_color": Color.orangered,
 }
+
+# These are jsut here because it's a convenient place. (end-of-jam code)
+var result_players
+var result_scores
 
 # Read args from cmd into dict
 func parse_os_args():

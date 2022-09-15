@@ -17,6 +17,9 @@ func _on_Back_pressed():
 func _on_ConnectionCheckTimer_timeout():
 	if(NetworkManager.isConnected):
 		$Connecting.visible = false
+		$Refresh.disabled = false
+		$CreateLobby.disabled = false
+		_on_Refresh_pressed()
 
 func _on_CreateLobby_pressed():
 	NetworkManager.rq_create_lobby($NewLobbyName.text)

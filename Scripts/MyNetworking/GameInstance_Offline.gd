@@ -71,12 +71,23 @@ func start_next_level():
 #		rpc_local(self, "update_turn", [get_next_turn()])
 	else:
 		print("GAME OVER")
+		goto_winscreen()
 
 func goto_next_level():
 	clear_level()
+	yield(get_tree(), "idle_frame") # wait until level is really gone
+	yield(get_tree(), "idle_frame") # wait until level is really gone
 	cur_level += 1
 	UI.update_scores(players, player_scores)
 	load_level(level_sequence[cur_level])
+
+func goto_winscreen():
+	clear_level()
+	NetworkManager.result_players = players
+	NetworkManager.result_scores = player_scores
+# warning-ignore:return_value_discarded
+	get_tree().change_scene("res://Scenes/WinScreen.tscn")
+	self.queue_free()
 
 ## Called by client when their turn is done
 #master func turn_finished():
@@ -147,19 +158,34 @@ func clear_level():
 			# ignore anythine else
 			pass
 
-puppetsync func spawn_players():
+func spawn_players():
 	var grav_bit = 8
 	var ball = PLAYER_SCENE.instance()
 	ball.init(my_id, spawn_point, grav_bit)
 	ball.setName(players[my_id]["name"])
-	ball.setSprite(players[my_id]["sprite"])
+	match players[my_id]["sprite"]:
+		'normal':
+			ball.setSprite(load("res://Sprites/ball.png"))
+		'hiic':
+			ball.setSprite(load("res://Sprites/hiicball.png"))
 	ball.setColor(players[my_id]["color"])
-	ball.setTrail(players[my_id]["trail"])
+	ball.setTrail(get_gradient(players[my_id]["trail"], players[my_id]["trail_color"]))
 	grav_bit += 1
 #	ball.set_network_master(id)
 	$PLAYERS.add_child(ball)
 #	if id == get_tree().get_network_unique_id():
 	camera.focus = ball
+
+func get_gradient(type:String, col:Color=Color.white) -> Gradient:
+	match type:
+		'rainbow':
+			var grad = load("res://Resources/RainbowGradient.tres")
+			return grad
+		'normal', _:
+			var grad = load("res://Resources/TrailGradient.tres").duplicate(true)
+			for i in range(grad.get_point_count()):
+				grad.set_color(i, Color(col.r, col.g, col.b, grad.get_color(i).a))
+			return grad
 
 #func create_player(name : String = "UNNAMED", color : Color = Color.white):
 #	var newPlayer = PLAYER_SCENE.instance()
@@ -189,9 +215,8 @@ puppetsync func spawn_players():
 #		ball.queue_free()
 
 remotesync func log_hit():
-	pass # TODO
-#	player_scores[id] += 1
-#	UI.update_scores(players, player_scores)
+	player_scores[my_id] += 1
+	UI.update_scores(players, player_scores)
 
 #remotesync func update_timer(amount):
 #	UI.update_timer(amount)
