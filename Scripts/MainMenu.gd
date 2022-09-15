@@ -1,10 +1,15 @@
 extends Control
 
-
+func _ready():
+	GameService.hide()
+	LobbyService.hide()
 
 func _on_Offline_pressed():
 # warning-ignore:return_value_discarded
-	get_tree().change_scene("res://Scenes/Level1.tscn")
+#	get_tree().change_scene("res://Scenes/Level1.tscn")
+	GameService.start_offline_game({"name":"YOU", "color:":Color.red})
+	GameService.show()
+	$"/root/MainMenu".queue_free()
 
 
 func _on_Online_pressed():
@@ -21,6 +26,7 @@ func _on_Online_pressed():
 	else:
 		NetworkManager.connect_to_server(name, IP, int(port))
 	
+	GameService.show()
 # warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Scenes/MyNetworking/LobbyList.tscn")
 

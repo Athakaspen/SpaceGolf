@@ -1,6 +1,7 @@
 extends ViewportContainer
 
 var GAME_INSTANCE = preload("res://Scenes/MyNetworking/GameInstance.tscn")
+var OFFLINE_GAME_INSTANCE = preload("res://Scenes/MyNetworking/GameInstance_Offline.tscn")
 
 var HOLE_SEQUENCES = {
 	"default":[
@@ -41,6 +42,18 @@ func start_game(players : Dictionary, game_mode:String):
 #	get_node(game_id).spawn_players()
 #	for id in players.keys():
 #		get_node(game_id).rpc_id(id, "spawn_players")
+
+func start_offline_game(player_data:Dictionary):
+	var hole_sequence = 'default'
+	
+	var game_id = UUID.NewID()
+	var players = {0:player_data}
+	
+	var game = OFFLINE_GAME_INSTANCE.instance()
+	game.init(game_id, players, HOLE_SEQUENCES[hole_sequence])
+	self.add_child(game)
+	
+	get_node(game_id).start_next_level()
 
 puppetsync func srv_start_game(players : Dictionary, game_id:String,
 level_sequence: String = "default", game_mode:String = "free-for-all"):
