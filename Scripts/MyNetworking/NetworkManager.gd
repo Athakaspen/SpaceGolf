@@ -14,7 +14,11 @@ var isConnected = false
 signal new_lobby_data(lobby_data)
 
 var players = {}
-var my_data = {'name': null}
+var my_data = {
+	'name': 'Anonymous', 
+	'color': Color.white, 
+	"trail": preload("res://Resources/TrailGradient.tres")
+}
 
 # Read args from cmd into dict
 func parse_os_args():

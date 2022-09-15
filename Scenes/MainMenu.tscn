@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/MainMenu.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/ball.png" type="Texture" id=2]
+[ext_resource path="res://Resources/TrailGradient.tres" type="Gradient" id=3]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.292208, 0.745454 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.0090909 ), -2.85185, 0.0, 0, 0 ]
 
 [node name="MainMenu" type="Control"]
 script = ExtResource( 1 )
@@ -49,6 +54,42 @@ margin_right = 611.0
 margin_bottom = 312.0
 placeholder_text = "Port"
 
+[node name="PlayerInfo" type="Panel" parent="."]
+margin_left = 704.0
+margin_top = 49.0
+margin_right = 867.0
+margin_bottom = 296.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Sprite" type="Sprite" parent="PlayerInfo"]
+position = Vector2( 82, 70 )
+scale = Vector2( 0.65625, 0.65625 )
+z_index = 2
+texture = ExtResource( 2 )
+
+[node name="Trail" type="Line2D" parent="PlayerInfo"]
+points = PoolVector2Array( 81, 71, 127, 69, 168, 74, 210, 68, 247, 66, 274, 64, 303, 55 )
+width = 60.0
+width_curve = SubResource( 1 )
+gradient = ExtResource( 3 )
+
+[node name="ChangeColor" type="Button" parent="PlayerInfo"]
+margin_left = 26.0
+margin_top = 147.0
+margin_right = 141.0
+margin_bottom = 179.0
+text = "Change Color"
+
+[node name="ChangeTrail" type="Button" parent="PlayerInfo"]
+margin_left = 26.0
+margin_top = 190.0
+margin_right = 141.0
+margin_bottom = 222.0
+text = "Change Trail"
+
 [connection signal="pressed" from="Offline" to="." method="_on_Offline_pressed"]
 [connection signal="pressed" from="Online" to="." method="_on_Online_pressed"]
 [connection signal="pressed" from="Credits" to="." method="_on_Credits_pressed"]
+[connection signal="pressed" from="PlayerInfo/ChangeColor" to="." method="_on_ChangeColor_pressed"]
+[connection signal="pressed" from="PlayerInfo/ChangeTrail" to="." method="_on_ChangeTrail_pressed"]

@@ -149,6 +149,8 @@ puppetsync func spawn_players():
 		var ball = PLAYER_SCENE.instance()
 		ball.init(id, spawn_point, grav_bit, game_mode)
 		ball.setName(players[id]["name"])
+		ball.setColor(players[id]["color"])
+		ball.setTrail(players[id]["trail"])
 		grav_bit += 1
 		ball.set_network_master(id)
 		$PLAYERS.add_child(ball)

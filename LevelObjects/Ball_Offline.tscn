@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://Sprites/hiicmoon.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/ball.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Ball_Offline.gd" type="Script" id=2]
 
 [sub_resource type="PhysicsMaterial" id=5]
@@ -40,7 +40,7 @@ modulate = Color( 0.694118, 0.196078, 0.196078, 1 )
 shape = SubResource( 8 )
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 0.0166667, 0.0166667 )
+scale = Vector2( 0.19, 0.19 )
 z_index = 5
 texture = ExtResource( 1 )
 

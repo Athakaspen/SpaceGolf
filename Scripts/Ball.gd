@@ -141,6 +141,8 @@ func setName(name : String) -> void:
 	$Nametag.text = name
 func setColor(color : Color) -> void:
 	$Sprite.modulate = color
+func setTrail(grad : Gradient) -> void:
+	$Trail.gradient = grad
 
 func start_win_animation(dur:float):
 #	print("Tweening")
