@@ -21,16 +21,18 @@ func remove_all_games():
 		child.queue_free()
 
 # Start a new game on the server
-func start_game(players : Dictionary):
+func start_game(players : Dictionary, game_mode:String):
 	# Only called by server
 	if not is_network_master():
 		return
 	
+	var hole_sequence = 'default'
+	
 	var game_id = UUID.NewID()
-	srv_start_game(players, game_id)
+	srv_start_game(players, game_id, hole_sequence, game_mode)
 	
 	for id in players.keys():
-		rpc_id(id, "srv_start_game", players, game_id)
+		rpc_id(id, "srv_start_game", players, game_id, hole_sequence, game_mode)
 	
 	# Tell the server to start the first level
 	get_node(game_id).start_next_level()

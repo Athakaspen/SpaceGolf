@@ -3,6 +3,7 @@ extends Control
 
 
 func _on_Offline_pressed():
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Scenes/Level1.tscn")
 
 
@@ -20,8 +21,10 @@ func _on_Online_pressed():
 	else:
 		NetworkManager.connect_to_server(name, IP, int(port))
 	
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Scenes/MyNetworking/LobbyList.tscn")
 
 
 func _on_Credits_pressed():
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Scenes/Credits.tscn")

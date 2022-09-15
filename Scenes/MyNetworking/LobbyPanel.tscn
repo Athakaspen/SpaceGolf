@@ -10,6 +10,8 @@ func updateData(lobbyData):
 	$HBoxContainer/ID.text = name
 	$HBoxContainer/Name.text = lobbyData[\"name\"]
 	$HBoxContainer/NumPlayers.text = str(lobbyData[\"cur_players\"]) + \"/\" + str(lobbyData[\"max_players\"])
+	if lobbyData[\"cur_players\"] >= lobbyData[\"max_players\"]:
+		$HBoxContainer/JoinButton.disabled = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

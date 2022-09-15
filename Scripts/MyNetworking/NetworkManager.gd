@@ -118,7 +118,12 @@ func rq_join_lobby(lobby_id:String):
 master func join_lobby(lobby_id:String):
 	var player_id = get_tree().get_rpc_sender_id()
 	var lobby = LobbyService.get_node_or_null(lobby_id)
-	if lobby == null: print("Attempt to join nonexistent lobby")
+	if lobby == null: 
+		print("Attempt to join nonexistent lobby")
+		return
+	if lobby.get_cur_players() >= lobby.max_players:
+		print("Attempt to join full lobby")
+		return
 	rpc_id(player_id, "svr_create_lobby", lobby_id, lobby.nickname, lobby.owner_id)
 	lobby.on_player_joined(player_id, players[player_id])
 

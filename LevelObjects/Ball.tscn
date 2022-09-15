@@ -16,7 +16,7 @@ radius = 15.0
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.993506, 0.0363636 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="Curve" id=10]
-_data = [ Vector2( 0, 0 ), 0.0, 39.76, 0, 0, Vector2( 0.0422078, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.214286, 0.672727 ), -0.56, -0.56, 0, 0, Vector2( 0.996753, 0 ), -1.68, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 0 ), 0.0, 39.76, 0, 0, Vector2( 0.0194805, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.25974, 0.709091 ), -0.56, -0.56, 0, 0, Vector2( 0.996753, 0 ), -1.68, 0.0, 0, 0 ]
 
 [sub_resource type="Gradient" id=11]
 offsets = PoolRealArray( 0, 0.631769, 0.971119 )
@@ -58,6 +58,7 @@ wait_time = 0.5
 one_shot = true
 
 [node name="TrajectoryLine" type="Line2D" parent="."]
+visible = false
 z_index = 3
 points = PoolVector2Array( 0, 0, 100, 0 )
 width_curve = SubResource( 7 )
@@ -71,11 +72,22 @@ text = "Jerry"
 align = 1
 
 [node name="Trail" type="Line2D" parent="."]
+visible = false
 width = 15.0
 width_curve = SubResource( 10 )
 default_color = Color( 1, 0.819608, 0.00392157, 1 )
 gradient = SubResource( 11 )
 
+[node name="TurnTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="PostTurnTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
 [connection signal="timeout" from="Area2D/Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="TurnTimer" to="." method="_on_TurnTimer_timeout"]
+[connection signal="timeout" from="PostTurnTimer" to="." method="_on_PostTurnTimer_timeout"]
