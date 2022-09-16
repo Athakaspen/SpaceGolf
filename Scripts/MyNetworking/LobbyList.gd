@@ -22,6 +22,8 @@ func _on_ConnectionCheckTimer_timeout():
 		_on_Refresh_pressed()
 
 func _on_CreateLobby_pressed():
+	var name = $NewLobbyName.text
+	if name.length() > 20: name = name.substr(0,20)
 	NetworkManager.rq_create_lobby($NewLobbyName.text)
 	# remove scene
 	self.queue_free()

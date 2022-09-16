@@ -64,6 +64,7 @@ points = PoolVector2Array( 0, 0, 100, 0 )
 width_curve = SubResource( 7 )
 
 [node name="Nametag" type="Label" parent="."]
+visible = false
 margin_left = -15.0
 margin_top = -34.0
 margin_right = 25.0

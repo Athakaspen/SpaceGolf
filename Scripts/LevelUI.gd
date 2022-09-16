@@ -10,12 +10,24 @@ func _ready():
 
 func update_turn(player_name:String):
 	turnLabel.text = player_name + "'s turn"
+func hide_turns():
+	turnLabel.hide()
 
 func update_scores(players:Dictionary, player_scores:Dictionary):
-	var text = ""
+	var scoretexts = []
 	for id in player_scores.keys():
-		text += "%s: %s\n" % [players[id]["name"], player_scores[id]]
+		scoretexts.append([player_scores[id], "%s: %s\n" % [players[id]["name"], stepify(player_scores[id], 0.01)]])
+	scoretexts.sort_custom(MyCustomSorter, 'sort_ascending')
+	var text = ""
+	for entry in scoretexts:
+		text += entry[1]
 	scoreLabel.text = text
+
+class MyCustomSorter:
+	static func sort_ascending(a, b):
+		if a[0] < b[0]:
+			return true
+		return false
 
 func update_timer(amount:float):
 	timerBar.value = amount

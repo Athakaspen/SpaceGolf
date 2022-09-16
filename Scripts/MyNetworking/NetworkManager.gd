@@ -1,13 +1,13 @@
 extends Node
 
-const VERSION_NUM = "0.1.4"
+const VERSION_NUM = "0.1.5"
 
 # How I ran as a server on GCP:  nohup ./Godot_v3.2.1-stable_linux_server.64 --main-pack SquaresClub.pck --network_connection_type=server &
-#const DEFAULT_IP = '127.0.0.1'
-const DEFAULT_IP = '3.15.188.170'
+const DEFAULT_IP = '127.0.0.1'
+#const DEFAULT_IP = '3.15.188.170'
 const DEFAULT_PORT = 24601
 const DEFAULT_MAX_PLAYERS = 64
-const DEFAULT_CONNECTION_TYPE = "client"
+const DEFAULT_CONNECTION_TYPE = "server"
 const SERVER_ID = 1
 
 var isConnected = false
@@ -35,6 +35,11 @@ func parse_os_args():
 			arguments[key_value[0].lstrip("--")] = key_value[1]
 	
 	return arguments
+
+# Allow the user to free their mouse
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _ready():
 	# Network signals.

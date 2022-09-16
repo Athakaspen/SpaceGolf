@@ -37,6 +37,11 @@ radius = 166.0
 position = Vector2( 838, 268 )
 radius = 162.0
 
+[node name="Planet_Static13" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 1962, 703 )
+radius = 162.0
+falloff = 0.008
+
 [node name="Planet_Static5" parent="LevelObjects" instance=ExtResource( 3 )]
 position = Vector2( 943, -189 )
 radius = 130.0
@@ -71,6 +76,11 @@ position = Vector2( 1340, 958 )
 density = 2.0
 radius = 92.0
 
+[node name="Planet_Static14" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 2029, 272 )
+density = 2.0
+radius = 92.0
+
 [node name="Planet_Static11" parent="LevelObjects" instance=ExtResource( 3 )]
 position = Vector2( 1320, 479 )
 density = 1.6
@@ -82,7 +92,7 @@ falloff = 0.022
 grav = 800.0
 
 [node name="CameraPos" type="Camera2D" parent="."]
-position = Vector2( 1473, 361 )
+position = Vector2( 1503, 393 )
 
 [node name="Label" type="Label" parent="."]
 margin_left = 136.0

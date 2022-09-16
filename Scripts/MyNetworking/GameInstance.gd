@@ -13,9 +13,12 @@ var players_finished = []
 var turn_order = []
 var cur_turn = -1
 var player_scores = {}
+var player_times = {}
 var level_sequence = {}
 var cur_level
 var game_mode : String
+var collisions_enabled := false
+var started := false # whether the round timing has started
 
 onready var camera = $Camera
 onready var UI = $UILayer/UI
@@ -40,15 +43,35 @@ func rpc_local_unreliable(calling_player:Node, func_name:String, args:Array = []
 func _ready():
 	pass # Replace with function body.
 
-func init(game_id:String, player_list:Dictionary, level_series:Array, mode:String):
+# Time scoring
+func _process(delta):
+		if game_mode == 'free-for-all':
+			if is_network_master():
+				if started:
+					for id in players.keys():
+						if not id in players_finished:
+							player_times[id] += delta
+#				UI.update_scores(players, player_times)
+				rpc_local(self, "update_times", [player_times])
+			else:
+				UI.update_scores(players, player_times)
+		else:
+			UI.update_scores(players, player_scores)
+
+puppet func update_times(new_times):
+	player_times = new_times
+
+func init(game_id:String, player_list:Dictionary, level_series:Array, mode:String, collisions:bool):
 	name = game_id
 	players = player_list
 	level_sequence = level_series
 	cur_level = -1
 	game_mode = mode
+	collisions_enabled = collisions
 	# init scores to 0
 	for id in players.keys():
 		player_scores[id] = 0.0
+		player_times[id] = 0.0
 	
 	# this only matters on the server
 	turn_order = players.keys()
@@ -83,7 +106,9 @@ puppetsync func goto_next_level():
 	yield(get_tree(), "idle_frame") # wait until level is really gone
 	yield(get_tree(), "idle_frame") # wait until level is really gone
 	cur_level += 1
-	UI.update_scores(players, player_scores)
+#	UI.update_scores(players, player_scores)
+	if game_mode == 'free-for-all':
+		UI.hide_turns()
 	load_level(level_sequence[cur_level])
 
 # Called by client when their turn is done
@@ -144,6 +169,7 @@ master func done_preconfiguring():
 # Remove all existing level data from the game instance
 func clear_level():
 	players_finished = []
+	started = false
 	for child in get_children():
 		if child.name == "PLAYERS":
 			# clear players but keep parent node
@@ -168,11 +194,13 @@ puppetsync func spawn_players():
 			'hiic':
 				ball.setSprite(load("res://Sprites/hiicball.png"))
 		ball.setTrail(get_gradient(players[id]["trail"], players[id]["trail_color"]))
+		ball.setCollisions(collisions_enabled)
 		grav_bit += 1
 		ball.set_network_master(id)
 		$PLAYERS.add_child(ball)
 		if id == get_tree().get_network_unique_id():
 			camera.focus = ball
+	started = true
 
 func get_gradient(type:String, col:Color=Color.white) -> Gradient:
 	match type:
@@ -214,16 +242,17 @@ remotesync func erase_player(other_player_id):
 # warning-ignore:return_value_discarded
 		players.erase(other_player_id)
 		player_scores.erase(other_player_id)
+		player_times.erase(other_player_id)
 		players_finished.erase(other_player_id)
 		turn_order.erase(other_player_id)
-		UI.update_scores(players, player_scores)
+#		UI.update_scores(players, player_scores)
 	var ball = $PLAYERS.get_node_or_null(str(other_player_id))
 	if ball != null:
 		ball.queue_free()
 
 remotesync func log_hit(id):
 	player_scores[id] += 1
-	UI.update_scores(players, player_scores)
+#	UI.update_scores(players, player_scores)
 
 remotesync func update_timer(amount):
 	UI.update_timer(amount)

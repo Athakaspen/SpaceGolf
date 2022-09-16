@@ -9,6 +9,7 @@ func _ready():
 	get_tree().network_peer = null # force disconnect
 	update_color()
 	update_trail()
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 #	_on_ChangeColor_pressed()
 #	_on_ChangeTrail_pressed()
 
@@ -21,8 +22,9 @@ func _on_Offline_pressed():
 
 
 func _on_Online_pressed():
-	var name = $EnterName.text
+	var name = $PlayerInfo/EnterName.text
 	if name == "": name = "Anonymous"
+	if name.length() > 20: name = name.substr(0,20)
 	
 	# Get IP and port info
 	var IP = $EnterIP.text
@@ -91,3 +93,7 @@ func get_gradient(type:String, col:Color=Color.white) -> Gradient:
 			for i in range(grad.get_point_count()):
 				grad.set_color(i, Color(col.r, col.g, col.b, grad.get_color(i).a))
 			return grad
+
+
+func _on_Fullscreen_pressed():
+	OS.window_fullscreen = !OS.window_fullscreen

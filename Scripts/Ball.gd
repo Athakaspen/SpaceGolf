@@ -148,6 +148,8 @@ func setSprite(texture : Texture) -> void:
 	$Sprite.texture = texture
 func setTrail(grad : Gradient) -> void:
 	$Trail.gradient = grad
+func setCollisions(enabled:bool) -> void:
+	set_collision_mask_bit(1, enabled)
 
 func start_win_animation(dur:float):
 #	print("Tweening")
@@ -177,6 +179,8 @@ func on_win():
 		trail.hide()
 		trajline.hide()
 		$Nametag.hide()
+		self.set_collision_mask_bit(1, false) # no collision
+		self.set_collision_layer_bit(1, false) # no collision
 		GAME.rpc_local(self, "pup_hide_self")
 		start_postturn(0.5)
 
@@ -185,6 +189,8 @@ puppet func pup_hide_self():
 	trail.hide()
 	trajline.hide()
 	$Nametag.hide()
+	self.set_collision_mask_bit(1, false)
+	self.set_collision_layer_bit(1, false) # no collision
 
 # Functions for checking grounded state
 var curPlanet

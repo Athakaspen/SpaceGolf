@@ -42,6 +42,12 @@ func init(id:int, spawn_point:Vector2, grav_bit:int):
 #	if game_mode == "turns":
 #		isMyTurn = false
 
+#onready var mouse_pos = get_global_mouse_position()
+#func _input(event):
+#	if event is InputEventMouse:
+#		mouse_pos = event.global_position
+#		print(event.global_position)
+
 func _process(_delta):
 	$Nametag.rect_position = global_position + Vector2(-16, -24)
 #	if game_mode == "free-for-all" and self.visible:
@@ -49,6 +55,8 @@ func _process(_delta):
 	trail.visible = self.visible
 #	if is_network_master():
 	trajline.visible = isGrounded
+#	print(get_viewport().get_mouse_position())
+#	var mousepos = GAME.camera.position + get_viewport().get_mouse_position() - (get_viewport().size / 2)
 	aimVector = (get_global_mouse_position() - position) * AIM_DIST_SCALE
 	# Clamp
 	if aimVector.length() > MAX_STRENGTH:
@@ -57,6 +65,8 @@ func _process(_delta):
 		aimVector = aimVector.normalized() * MIN_STRENGTH
 	trajline.points[1] = aimVector * LINE_SCALE
 	trajline.global_rotation_degrees = 0
+
+
 #	if isMyTurn:
 #		GAME.rpc_local_unreliable(self, "pup_update_trajline", [trajline.points[1]])
 	

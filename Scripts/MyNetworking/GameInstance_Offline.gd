@@ -9,8 +9,10 @@ var players = {}
 #var turn_order = []
 #var cur_turn = -1
 var player_scores = {}
+var player_times = {}
 var level_sequence = {}
 var cur_level
+var started := false #Whetehr the current level has started (palyers spawned)
 #var game_mode : String
 
 var my_id = 0
@@ -38,6 +40,12 @@ var spawn_point = Vector2.ZERO
 func _ready():
 	pass # Replace with function body.
 
+func _process(delta):
+	if(started):
+		player_times[my_id] += delta
+	UI.update_scores({0:{"name":"Strokes"}, 1:{"name":"Time"}}, {0: player_scores[my_id], 1:player_times[my_id]})
+	UI.hide_turns()
+
 func init(game_id:String, player_list:Dictionary, level_series:Array):
 	name = game_id
 	players = player_list
@@ -47,6 +55,7 @@ func init(game_id:String, player_list:Dictionary, level_series:Array):
 	# init scores to 0
 	for id in players.keys():
 		player_scores[id] = 0.0
+		player_times[id] = 0.0
 	
 	# this only matters on the server
 #	turn_order = players.keys()
@@ -78,7 +87,7 @@ func goto_next_level():
 	yield(get_tree(), "idle_frame") # wait until level is really gone
 	yield(get_tree(), "idle_frame") # wait until level is really gone
 	cur_level += 1
-	UI.update_scores(players, player_scores)
+#	UI.update_scores(players, player_scores)
 	load_level(level_sequence[cur_level])
 
 func goto_winscreen():
@@ -147,6 +156,7 @@ func load_level(level_path:String):
 # Remove all existing level data from the game instance
 func clear_level():
 #	players_finished = []
+	started = false
 	for child in get_children():
 		if child.name == "PLAYERS":
 			# clear players but keep parent node
@@ -175,6 +185,7 @@ func spawn_players():
 	$PLAYERS.add_child(ball)
 #	if id == get_tree().get_network_unique_id():
 	camera.focus = ball
+	started = true
 
 func get_gradient(type:String, col:Color=Color.white) -> Gradient:
 	match type:
@@ -216,7 +227,7 @@ func get_gradient(type:String, col:Color=Color.white) -> Gradient:
 
 remotesync func log_hit():
 	player_scores[my_id] += 1
-	UI.update_scores(players, player_scores)
+#	UI.update_scores(players, player_scores)
 
 #remotesync func update_timer(amount):
 #	UI.update_timer(amount)
