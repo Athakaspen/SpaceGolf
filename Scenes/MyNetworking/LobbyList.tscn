@@ -51,18 +51,18 @@ text = "Refresh"
 
 [node name="NewLobbyName" type="LineEdit" parent="."]
 margin_left = 538.0
-margin_top = 548.0
+margin_top = 571.0
 margin_right = 782.0
-margin_bottom = 578.0
+margin_bottom = 601.0
 theme = ExtResource( 3 )
 align = 1
 placeholder_text = "Enter Lobby Name"
 
 [node name="CreateLobby" type="Button" parent="."]
 margin_left = 494.0
-margin_top = 597.0
+margin_top = 620.0
 margin_right = 831.0
-margin_bottom = 672.0
+margin_bottom = 695.0
 theme = ExtResource( 2 )
 disabled = true
 text = "Create Lobby"
@@ -76,13 +76,20 @@ theme = ExtResource( 3 )
 text = "back"
 
 [node name="NoLobbies" type="Label" parent="."]
-visible = false
 margin_left = 552.0
 margin_top = 61.0
 margin_right = 752.0
 margin_bottom = 81.0
 theme = ExtResource( 3 )
 text = "No lobbies found."
+
+[node name="PlayersOnline" type="Label" parent="."]
+margin_left = 559.0
+margin_top = 487.0
+margin_right = 759.0
+margin_bottom = 507.0
+theme = ExtResource( 3 )
+text = "Players Online: 1"
 
 [node name="LobbyList" type="ScrollContainer" parent="."]
 margin_left = 159.0
@@ -111,7 +118,6 @@ anims/RESET = SubResource( 1 )
 anims/connecting = SubResource( 2 )
 
 [node name="ConnectionCheckTimer" type="Timer" parent="."]
-wait_time = 0.5
 autostart = true
 
 [connection signal="pressed" from="Refresh" to="." method="_on_Refresh_pressed"]

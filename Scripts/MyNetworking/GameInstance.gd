@@ -237,7 +237,7 @@ func on_player_left(other_player_id):
 
 remotesync func erase_player(other_player_id):
 	if players.has(other_player_id):
-		print("PLAYER DISCONNECTED")
+		print("PLAYER %s DISCONNECTED IN-GAME" % other_player_id)
 		Notifications.notify("%s (%s) has disconnected." % [players[other_player_id]["name"], other_player_id])
 # warning-ignore:return_value_discarded
 		players.erase(other_player_id)

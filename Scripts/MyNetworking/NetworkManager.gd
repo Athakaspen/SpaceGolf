@@ -3,11 +3,11 @@ extends Node
 const VERSION_NUM = "0.1.5"
 
 # How I ran as a server on GCP:  nohup ./Godot_v3.2.1-stable_linux_server.64 --main-pack SquaresClub.pck --network_connection_type=server &
-#const DEFAULT_IP = '127.0.0.1'
-const DEFAULT_IP = '3.15.188.170'
+const DEFAULT_IP = '127.0.0.1'
+#const DEFAULT_IP = '3.15.188.170'
 const DEFAULT_PORT = 24601
 const DEFAULT_MAX_PLAYERS = 64
-const DEFAULT_CONNECTION_TYPE = "client"
+const DEFAULT_CONNECTION_TYPE = "server"
 const SERVER_ID = 1
 
 var isConnected = false
@@ -21,6 +21,7 @@ var my_data = {
 	"trail": 'normal',
 	"trail_color": Color.orangered,
 }
+var player_count := 0 #set by server
 
 # These are jsut here because it's a convenient place. (end-of-jam code)
 var result_players
@@ -60,6 +61,9 @@ func _ready():
 		print("Creating Server")
 		create_server('Server Host')
 
+puppetsync func update_player_count(val):
+	player_count = val
+
 # You're the server host and you create a server.
 func create_server(server_host_name: String):
 	my_data['name'] = server_host_name
@@ -81,12 +85,17 @@ func connect_to_server(player_nickname: String, ip: String = DEFAULT_IP, port: i
 
 # Called when THIS client successfully connects to the server.
 func _on_connected_to_server():
-	Notifications.notify("Connection Successful")
+	Notifications.notify("Connected")
 	rpc_id(1, "register_player", my_data)
 	isConnected = true
+	var lobbyList = get_node_or_null("/root/LobbyList")
+	if lobbyList != null:
+		lobbyList._on_Refresh_pressed()
 
 master func register_player(data):
 	players[get_tree().get_rpc_sender_id()] = data
+	player_count = players.size() - 1
+	rpc("update_player_count", player_count)
 
 # Client calls this to initiate a data transfer
 func rq_lobby_data():
@@ -178,6 +187,8 @@ func _on_player_disconnected(other_player_id):
 				break
 		if players.has(other_player_id):
 			players.erase(other_player_id)
+			player_count = players.size() - 1
+			rpc("update_player_count", player_count)
 	# server disconnect (i dont think this works)
 	elif(1==other_player_id):
 		Notifications.notify("Disconnect from server")

@@ -55,5 +55,9 @@ func on_new_lobby_data(lobbyData):
 	for panel in $LobbyList/VBoxContainer.get_children():
 		if not panel.name in lobbyData.keys():
 			panel.queue_free()
+	
+	# Player count
+	$PlayersOnline.text = "Players online: " + str(NetworkManager.player_count)
+	$PlayersOnline.show()
 
 

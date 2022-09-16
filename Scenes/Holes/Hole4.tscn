@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
+[ext_resource path="res://Fonts/DefaultTheme16.tres" type="Theme" id=1]
 [ext_resource path="res://Sprites/hiicmoon.png" type="Texture" id=2]
 [ext_resource path="res://LevelObjects/Planet_Static.tscn" type="PackedScene" id=3]
 [ext_resource path="res://LevelObjects/Goal.tscn" type="PackedScene" id=4]
@@ -7,7 +8,7 @@
 [node name="LEVEL" type="Node2D"]
 
 [node name="SpawnPoint" type="Position2D" parent="."]
-position = Vector2( 428, 1050 )
+position = Vector2( 435, 1066 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -20,7 +21,11 @@ texture = ExtResource( 2 )
 [node name="LevelObjects" type="Node2D" parent="."]
 
 [node name="Planet_Static" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 178, 350 )
+position = Vector2( 178, 271 )
+radius = 104.0
+
+[node name="Planet_Static2" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( -702, 996 )
 radius = 104.0
 
 [node name="Planet_Static6" parent="LevelObjects" instance=ExtResource( 3 )]
@@ -32,12 +37,17 @@ position = Vector2( -340, 1071 )
 radius = 104.0
 
 [node name="Planet_Static4" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( -228, 818 )
+position = Vector2( -379, 1392 )
+density = 1.5
+radius = 44.0
+
+[node name="Planet_Static5" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 425, 278 )
 density = 1.5
 radius = 44.0
 
 [node name="Planet_Static12" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 844, 865 )
+position = Vector2( 682, 910 )
 radius = 60.0
 
 [node name="Planet_Static7" parent="LevelObjects" instance=ExtResource( 3 )]
@@ -45,7 +55,11 @@ position = Vector2( 502, 1208 )
 radius = 130.0
 
 [node name="Planet_Static8" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 465, 640 )
+position = Vector2( 507, 614 )
+radius = 146.0
+
+[node name="Planet_Static14" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( -399, -199 )
 radius = 146.0
 
 [node name="Planet_Static13" parent="LevelObjects" instance=ExtResource( 3 )]
@@ -54,6 +68,10 @@ density = 1.2
 radius = 146.0
 
 [node name="Planet_Static9" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( -784, 423 )
+radius = 92.0
+
+[node name="Planet_Static15" parent="LevelObjects" instance=ExtResource( 3 )]
 position = Vector2( -784, 423 )
 radius = 92.0
 
@@ -73,8 +91,9 @@ grav = 800.0
 position = Vector2( -579, 205 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = 435.0
-margin_top = 1494.0
-margin_right = 483.0
-margin_bottom = 1508.0
-text = "LEVLE 4"
+margin_left = 473.0
+margin_top = 1200.0
+margin_right = 547.0
+margin_bottom = 1220.0
+theme = ExtResource( 1 )
+text = "Hole 4"

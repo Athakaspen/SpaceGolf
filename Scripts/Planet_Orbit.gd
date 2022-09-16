@@ -5,6 +5,8 @@ const DENSITY_SCALE = 0.01
 export(float, 0.1, 7, 0.1) var density = 1.0;
 export(float, 20, 300, 2) var radius = 80.0 setget set_radius
 export(float, 0.004, 0.03, 0.001) var falloff = 0.01 setget set_falloff
+export(int, 0, 10) var setSprite = 6 setget set_sprite
+
 export(float, 5, 360, 5) var speed = 70.0
 export(float, 10, 500, 10) var dist = 250.0
 export var clockwise := true 
@@ -26,6 +28,24 @@ func set_falloff(new_fo):
 	if Engine.editor_hint:
 		update_children()
 
+var sprites = [
+	"res://Sprites/Planets/planet00.png",
+	"res://Sprites/Planets/planet01.png",
+	"res://Sprites/Planets/planet02.png",
+	"res://Sprites/Planets/planet03.png",
+	"res://Sprites/Planets/planet04.png",
+	"res://Sprites/Planets/planet05.png",
+	"res://Sprites/Planets/planet06.png",
+	"res://Sprites/Planets/planet07.png",
+	"res://Sprites/Planets/planet08.png",
+	"res://Sprites/Planets/planet09.png",
+	"res://Sprites/Planets/planet10.png"
+]
+func set_sprite(new_val):
+	setSprite = new_val
+	if Engine.editor_hint:
+		$Sprite.texture = load(sprites[new_val])
+
 func set_start_angle(new_a):
 	start_angle = new_a
 	self.position = Vector2.UP.rotated(deg2rad(start_angle)) * dist
@@ -38,7 +58,7 @@ func update_children():
 	$GravityArea.gravity_distance_scale = falloff
 	if($PlanetCollisionShape != null):
 		$PlanetCollisionShape.shape.radius = radius
-		$Sprite.scale = Vector2(1,1) * (0.14/100) * radius
+		$Sprite.scale = Vector2(1,1) * (0.194/100) * radius
 		$GravityArea.gravity = get_mass()
 
 func get_mass(): 
