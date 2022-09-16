@@ -57,24 +57,27 @@ setSprite = 9
 
 [node name="Planet_Static4" parent="LevelObjects" instance=ExtResource( 3 )]
 position = Vector2( 881, 391 )
-density = 7.0
-radius = 44.0
+density = 2.4
+radius = 74.0
+falloff = 0.011
 
 [node name="Planet_Static9" parent="LevelObjects" instance=ExtResource( 3 )]
 position = Vector2( 1705, 67 )
-density = 7.0
-radius = 44.0
+density = 4.1
+radius = 70.0
+falloff = 0.011
 setSprite = 0
 
 [node name="Planet_Static8" parent="LevelObjects" instance=ExtResource( 3 )]
 position = Vector2( 1567, 402 )
-density = 7.0
+density = 5.4
 radius = 44.0
+falloff = 0.012
 setSprite = 5
 
 [node name="Planet_Static10" parent="LevelObjects" instance=ExtResource( 3 )]
 position = Vector2( 262, -95 )
-density = 7.0
+density = 2.0
 radius = 62.0
 setSprite = 9
 

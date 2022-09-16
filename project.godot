@@ -19,6 +19,7 @@ config/icon="res://Sprites/icon.png"
 UUID="*res://Scripts/MyNetworking/UUID.gd"
 Notifications="*res://Scenes/MyNetworking/Notifications.tscn"
 NetworkManager="*res://Scripts/MyNetworking/NetworkManager.gd"
+Parallax="*res://Scenes/Parallax.tscn"
 LobbyService="*res://Scripts/MyNetworking/LobbyService.gd"
 GameService="*res://Scripts/MyNetworking/GameService.gd"
 
@@ -66,4 +67,5 @@ common/enable_pause_aware_picking=true
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
+environment/default_clear_color=Color( 0.0666667, 0.0588235, 0.207843, 1 )
 environment/default_environment="res://default_env.tres"
