@@ -1,13 +1,13 @@
 extends Node
 
-const VERSION_NUM = "0.1.6"
+const VERSION_NUM = "1.0.1"
 
 # How I ran as a server on GCP:  nohup ./Godot_v3.2.1-stable_linux_server.64 --main-pack SquaresClub.pck --network_connection_type=server &
-const DEFAULT_IP = '127.0.0.1'
-#const DEFAULT_IP = '3.15.188.170'
+#const DEFAULT_IP = '127.0.0.1'
+const DEFAULT_IP = '3.15.188.170'
 const DEFAULT_PORT = 24601
 const DEFAULT_MAX_PLAYERS = 64
-const DEFAULT_CONNECTION_TYPE = "server"
+const DEFAULT_CONNECTION_TYPE = "client"
 const SERVER_ID = 1
 
 var isConnected = false
@@ -27,6 +27,7 @@ var player_count := 0 #set by server
 var result_players
 var result_scores
 var result_times
+var result_gamemode
 
 # Read args from cmd into dict
 func parse_os_args():
@@ -86,7 +87,7 @@ func connect_to_server(player_nickname: String, ip: String = DEFAULT_IP, port: i
 
 # Called when THIS client successfully connects to the server.
 func _on_connected_to_server():
-	Notifications.notify("Connected")
+#	Notifications.notify("Connected")
 	rpc_id(1, "register_player", my_data)
 	isConnected = true
 	var lobbyList = get_node_or_null("/root/LobbyList")

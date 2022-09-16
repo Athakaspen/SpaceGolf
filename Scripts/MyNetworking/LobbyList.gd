@@ -3,6 +3,7 @@ extends Node2D
 var LOBBY_PANEL_SCENE = preload("res://Scenes/MyNetworking/LobbyPanel.tscn")
 
 func _ready():
+# warning-ignore:return_value_discarded
 	NetworkManager.connect("new_lobby_data", self, "on_new_lobby_data")
 
 
@@ -11,14 +12,15 @@ func _on_Refresh_pressed():
 
 
 func _on_Back_pressed():
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Scenes/MainMenu.tscn")
 
 
 func _on_ConnectionCheckTimer_timeout():
 	if(NetworkManager.isConnected):
-		$Connecting.visible = false
-		$Refresh.disabled = false
-		$CreateLobby.disabled = false
+#		$Connecting.visible = false
+#		$Refresh.disabled = false
+#		$CreateLobby.disabled = false
 		_on_Refresh_pressed()
 
 func _on_CreateLobby_pressed():
@@ -59,5 +61,7 @@ func on_new_lobby_data(lobbyData):
 	# Player count
 	$PlayersOnline.text = "Players online: " + str(NetworkManager.player_count)
 	$PlayersOnline.show()
+	$Connecting.visible = false # clearly we're connected
+	$CreateLobby.disabled = false
 
 

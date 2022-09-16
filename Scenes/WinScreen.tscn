@@ -14,7 +14,17 @@ onready var list = $List
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	GameService.visible = false
-	update_scores(NetworkManager.result_players, NetworkManager.result_scores)
+	match NetworkManager.result_gamemode:
+		'turns':
+			update_scores(NetworkManager.result_players, NetworkManager.result_scores)
+		'free-for-all':
+			update_scores(NetworkManager.result_players, NetworkManager.result_times)
+		'offline':
+			var players = NetworkManager.result_players
+			var times = NetworkManager.result_times
+			var scores = NetworkManager.result_scores
+			winnerText.text = \"Strokes: \" + str(scores.values()[0])
+			list.text = \"Time: \" + str(stepify(times.values()[0], 0.001))
 
 
 func update_scores(players:Dictionary, player_scores:Dictionary):
@@ -26,6 +36,7 @@ func update_scores(players:Dictionary, player_scores:Dictionary):
 	for entry in scoretexts:
 		text += entry[1]
 	list.text = text
+	winnerText.text = scoretexts[0][1].split(\":\")[0] + \" Wins!\"
 
 class MyCustomSorter:
 	static func sort_ascending(a, b):
@@ -35,6 +46,7 @@ class MyCustomSorter:
 
 
 func _on_MainMenu_pressed():
+# warning-ignore:return_value_discarded
 	get_tree().change_scene(\"res://Scenes/MainMenu.tscn\")
 "
 

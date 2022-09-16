@@ -1,0 +1,315 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://LevelObjects/Planet_Orbit.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/hiicmoon.png" type="Texture" id=2]
+[ext_resource path="res://LevelObjects/Planet_Static.tscn" type="PackedScene" id=3]
+[ext_resource path="res://LevelObjects/Goal.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Fonts/DefaultTheme24.tres" type="Theme" id=5]
+
+[node name="LEVEL" type="Node2D"]
+
+[node name="SpawnPoint" type="Position2D" parent="."]
+position = Vector2( 2137, -304 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="SpawnPoint"]
+modulate = Color( 0.992157, 0, 1, 0.270588 )
+scale = Vector2( 0.0166667, 0.0166667 )
+texture = ExtResource( 2 )
+
+[node name="LevelObjects" type="Node2D" parent="."]
+
+[node name="Planet_Static8" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 2021, -215 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Planet_Static9" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 2079, -573 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Planet_Static10" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 2321, -878 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Planet_Static11" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 2695, -1029 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Planet_Static12" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 3092, -975 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Planet_Static13" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 3409, -727 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Planet_Static14" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 3596, -379 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Planet_Static15" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 3559, 1 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Planet_Static16" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 3285, 359 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Planet_Static17" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 2894, 510 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Planet_Static18" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 2443, 462 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Planet_Static19" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 2105, 169 )
+density = 1.8
+radius = 140.0
+falloff = 0.013
+setSprite = 2
+
+[node name="Goal" parent="LevelObjects" instance=ExtResource( 4 )]
+position = Vector2( 2775, -261 )
+falloff = 0.013
+grav = 1100.0
+
+[node name="Planet_Orbit3" parent="LevelObjects/Goal" instance=ExtResource( 1 )]
+position = Vector2( 89.9401, 43.7126 )
+density = 2.3
+radius = 38.0
+falloff = 0.011
+speed = 150.0
+dist = 100.0
+move_in_editor = true
+
+[node name="Planet_Orbit7" parent="LevelObjects/Goal" instance=ExtResource( 1 )]
+position = Vector2( -82.8243, 56.037 )
+density = 2.3
+radius = 38.0
+falloff = 0.011
+speed = 150.0
+dist = 100.0
+move_in_editor = true
+start_angle = 120.0
+
+[node name="Planet_Orbit4" parent="LevelObjects/Goal" instance=ExtResource( 1 )]
+position = Vector2( -7.11469, -99.7466 )
+density = 2.3
+radius = 38.0
+falloff = 0.011
+speed = 150.0
+dist = 100.0
+move_in_editor = true
+start_angle = 240.0
+
+[node name="Planet_Orbit" parent="LevelObjects/Goal" instance=ExtResource( 1 )]
+position = Vector2( 300.939, 248.064 )
+density = 2.6
+radius = 54.0
+falloff = 0.012
+setSprite = 7
+speed = 50.0
+dist = 390.0
+clockwise = false
+move_in_editor = true
+
+[node name="Planet_Orbit" parent="LevelObjects/Goal/Planet_Orbit" instance=ExtResource( 1 )]
+position = Vector2( -128.737, 18.0771 )
+density = 2.4
+radius = 38.0
+falloff = 0.014
+setSprite = 9
+speed = 200.0
+dist = 130.0
+move_in_editor = true
+
+[node name="Planet_Orbit2" parent="LevelObjects/Goal/Planet_Orbit" instance=ExtResource( 1 )]
+position = Vector2( 128.735, -18.0916 )
+density = 2.4
+radius = 38.0
+falloff = 0.014
+setSprite = 9
+speed = 200.0
+dist = 130.0
+move_in_editor = true
+start_angle = 180.0
+
+[node name="Planet_Orbit2" parent="LevelObjects/Goal" instance=ExtResource( 1 )]
+position = Vector2( -142.922, 362.868 )
+density = 2.6
+radius = 54.0
+falloff = 0.012
+setSprite = 7
+speed = 50.0
+dist = 390.0
+clockwise = false
+move_in_editor = true
+start_angle = 72.0
+
+[node name="Planet_Orbit" parent="LevelObjects/Goal/Planet_Orbit2" instance=ExtResource( 1 )]
+position = Vector2( 105.172, 76.4127 )
+density = 2.4
+radius = 38.0
+falloff = 0.014
+setSprite = 9
+speed = 200.0
+dist = 130.0
+move_in_editor = true
+
+[node name="Planet_Orbit2" parent="LevelObjects/Goal/Planet_Orbit2" instance=ExtResource( 1 )]
+position = Vector2( -105.171, -76.4137 )
+density = 2.4
+radius = 38.0
+falloff = 0.014
+setSprite = 9
+speed = 200.0
+dist = 130.0
+move_in_editor = true
+start_angle = 180.0
+
+[node name="Planet_Orbit5" parent="LevelObjects/Goal" instance=ExtResource( 1 )]
+position = Vector2( -389.273, -23.801 )
+density = 2.6
+radius = 54.0
+falloff = 0.012
+setSprite = 7
+speed = 50.0
+dist = 390.0
+clockwise = false
+move_in_editor = true
+start_angle = 144.0
+
+[node name="Planet_Orbit" parent="LevelObjects/Goal/Planet_Orbit5" instance=ExtResource( 1 )]
+position = Vector2( 80.0474, -102.432 )
+density = 2.4
+radius = 38.0
+falloff = 0.014
+setSprite = 9
+speed = 200.0
+dist = 130.0
+move_in_editor = true
+
+[node name="Planet_Orbit2" parent="LevelObjects/Goal/Planet_Orbit5" instance=ExtResource( 1 )]
+position = Vector2( -80.0483, 102.432 )
+density = 2.4
+radius = 38.0
+falloff = 0.014
+setSprite = 9
+speed = 200.0
+dist = 130.0
+move_in_editor = true
+start_angle = 180.0
+
+[node name="Planet_Orbit6" parent="LevelObjects/Goal" instance=ExtResource( 1 )]
+position = Vector2( -97.6615, -377.574 )
+density = 2.6
+radius = 54.0
+falloff = 0.012
+setSprite = 7
+speed = 50.0
+dist = 390.0
+clockwise = false
+move_in_editor = true
+start_angle = 216.0
+
+[node name="Planet_Orbit" parent="LevelObjects/Goal/Planet_Orbit6" instance=ExtResource( 1 )]
+position = Vector2( -128.737, 18.0771 )
+density = 2.4
+radius = 38.0
+falloff = 0.014
+setSprite = 9
+speed = 200.0
+dist = 130.0
+move_in_editor = true
+
+[node name="Planet_Orbit2" parent="LevelObjects/Goal/Planet_Orbit6" instance=ExtResource( 1 )]
+position = Vector2( 128.735, -18.0916 )
+density = 2.4
+radius = 38.0
+falloff = 0.014
+setSprite = 9
+speed = 200.0
+dist = 130.0
+move_in_editor = true
+start_angle = 180.0
+
+[node name="Planet_Orbit8" parent="LevelObjects/Goal" instance=ExtResource( 1 )]
+position = Vector2( 328.919, -209.553 )
+density = 2.6
+radius = 54.0
+falloff = 0.012
+setSprite = 7
+speed = 50.0
+dist = 390.0
+clockwise = false
+move_in_editor = true
+start_angle = 288.0
+
+[node name="Planet_Orbit" parent="LevelObjects/Goal/Planet_Orbit8" instance=ExtResource( 1 )]
+position = Vector2( 80.0474, -102.432 )
+density = 2.4
+radius = 38.0
+falloff = 0.014
+setSprite = 9
+speed = 200.0
+dist = 130.0
+move_in_editor = true
+
+[node name="Planet_Orbit2" parent="LevelObjects/Goal/Planet_Orbit8" instance=ExtResource( 1 )]
+position = Vector2( -80.0483, 102.432 )
+density = 2.4
+radius = 38.0
+falloff = 0.014
+setSprite = 9
+speed = 200.0
+dist = 130.0
+move_in_editor = true
+start_angle = 180.0
+
+[node name="CameraPos" type="Camera2D" parent="."]
+position = Vector2( 2768, -255 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 1968.0
+margin_top = -224.0
+margin_right = 2079.0
+margin_bottom = -196.0
+theme = ExtResource( 5 )
+text = "Hole 9"

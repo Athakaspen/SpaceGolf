@@ -9,7 +9,7 @@
 [node name="LEVEL" type="Node2D"]
 
 [node name="SpawnPoint" type="Position2D" parent="."]
-position = Vector2( -601, 91 )
+position = Vector2( -595, 109 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -45,7 +45,7 @@ radius = 66.0
 setSprite = 3
 
 [node name="Planet_Orbit" parent="LevelObjects/Planet_Static2" instance=ExtResource( 1 )]
-position = Vector2( -6.55671e-06, -150 )
+position = Vector2( 83.5128, -124.602 )
 density = 4.1
 radius = 36.0
 falloff = 0.014
@@ -69,6 +69,7 @@ radius = 108.0
 setSprite = 3
 
 [node name="Planet_Orbit" parent="LevelObjects/Planet_Static8" instance=ExtResource( 1 )]
+position = Vector2( -102.343, -228.092 )
 density = 2.9
 radius = 56.0
 falloff = 0.012
@@ -120,6 +121,7 @@ radius = 128.0
 setSprite = 3
 
 [node name="Planet_Orbit" parent="LevelObjects/Planet_Static12" instance=ExtResource( 1 )]
+position = Vector2( 139.188, -207.67 )
 density = 2.9
 radius = 56.0
 falloff = 0.012

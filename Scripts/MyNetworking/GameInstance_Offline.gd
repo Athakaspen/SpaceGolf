@@ -94,6 +94,8 @@ func goto_winscreen():
 	clear_level()
 	NetworkManager.result_players = players
 	NetworkManager.result_scores = player_scores
+	NetworkManager.result_times = player_times
+	NetworkManager.result_gamemode = 'offline'
 # warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Scenes/WinScreen.tscn")
 	self.queue_free()

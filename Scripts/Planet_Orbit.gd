@@ -80,4 +80,5 @@ func _ready():
 func _physics_process(delta):
 	if !Engine.editor_hint or move_in_editor == true:
 		cur_angle += speed * delta * (1 if clockwise else -1)
+		$Sprite.rotation_degrees += 0.3 * speed * delta * (1 if clockwise else -1)
 		self.position = Vector2.UP.rotated(deg2rad(cur_angle)) * dist

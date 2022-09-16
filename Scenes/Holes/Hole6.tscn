@@ -28,7 +28,7 @@ falloff = 0.011
 setSprite = 2
 
 [node name="Planet_Orbit" parent="LevelObjects/Planet_Static14" instance=ExtResource( 1 )]
-position = Vector2( 219.318, 334.514 )
+position = Vector2( -1.74846e-05, -400 )
 density = 2.2
 radius = 100.0
 falloff = 0.014
@@ -43,7 +43,7 @@ radius = 126.0
 setSprite = 8
 
 [node name="Planet_Orbit" parent="LevelObjects/Planet_Static8" instance=ExtResource( 1 )]
-position = Vector2( 266.232, 44.9504 )
+position = Vector2( -1.18021e-05, -270 )
 density = 2.5
 radius = 70.0
 falloff = 0.012
@@ -52,7 +52,7 @@ dist = 270.0
 move_in_editor = true
 
 [node name="Planet_Orbit2" parent="LevelObjects/Planet_Static8" instance=ExtResource( 1 )]
-position = Vector2( 246.511, 41.6208 )
+position = Vector2( -1.09278e-05, 250 )
 density = 2.5
 radius = 78.0
 falloff = 0.012
@@ -67,7 +67,7 @@ radius = 90.0
 setSprite = 2
 
 [node name="Planet_Orbit3" parent="LevelObjects/Planet_Static12" instance=ExtResource( 1 )]
-position = Vector2( 251.907, -64.3667 )
+position = Vector2( -1.1365e-05, -260 )
 density = 2.5
 radius = 56.0
 speed = 140.0
@@ -76,7 +76,7 @@ clockwise = false
 move_in_editor = true
 
 [node name="Planet_Orbit7" parent="LevelObjects/Planet_Static12" instance=ExtResource( 1 )]
-position = Vector2( 251.907, -64.3667 )
+position = Vector2( 225.167, 130 )
 density = 2.5
 radius = 56.0
 speed = 140.0
@@ -86,7 +86,7 @@ move_in_editor = true
 start_angle = 120.0
 
 [node name="Planet_Orbit4" parent="LevelObjects/Planet_Static12" instance=ExtResource( 1 )]
-position = Vector2( 251.907, -64.3667 )
+position = Vector2( -225.167, 130 )
 density = 2.5
 radius = 56.0
 speed = 140.0

@@ -24,7 +24,7 @@ margin_right = 913.0
 margin_bottom = 249.52
 theme = ExtResource( 2 )
 text = "Made in One week for the
-S&T Spring 2022 Game Jam"
+S&T Fall 2022 Game Jam"
 align = 1
 
 [node name="Networking" type="Label" parent="."]
