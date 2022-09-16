@@ -1,11 +1,19 @@
 extends ViewportContainer
 
 var GAME_INSTANCE = preload("res://Scenes/MyNetworking/GameInstance.tscn")
+var OFFLINE_GAME_INSTANCE = preload("res://Scenes/MyNetworking/GameInstance_Offline.tscn")
 
 var HOLE_SEQUENCES = {
 	"default":[
 		"res://Scenes/Holes/Hole1.tscn",
-		"res://Scenes/Holes/Hole2.tscn"
+		"res://Scenes/Holes/Hole2.tscn",
+		"res://Scenes/Holes/Hole3.tscn",
+		"res://Scenes/Holes/Hole4.tscn",
+		"res://Scenes/Holes/Hole5.tscn",
+		"res://Scenes/Holes/Hole6.tscn",
+		"res://Scenes/Holes/Hole7.tscn",
+		"res://Scenes/Holes/Hole8.tscn",
+		"res://Scenes/Holes/Hole9.tscn"
 	]
 }
 
@@ -21,7 +29,7 @@ func remove_all_games():
 		child.queue_free()
 
 # Start a new game on the server
-func start_game(players : Dictionary, game_mode:String):
+func start_game(players : Dictionary, game_mode:String, collisions:bool = false):
 	# Only called by server
 	if not is_network_master():
 		return
@@ -29,10 +37,10 @@ func start_game(players : Dictionary, game_mode:String):
 	var hole_sequence = 'default'
 	
 	var game_id = UUID.NewID()
-	srv_start_game(players, game_id, hole_sequence, game_mode)
+	srv_start_game(players, game_id, hole_sequence, game_mode, collisions)
 	
 	for id in players.keys():
-		rpc_id(id, "srv_start_game", players, game_id, hole_sequence, game_mode)
+		rpc_id(id, "srv_start_game", players, game_id, hole_sequence, game_mode, collisions)
 	
 	# Tell the server to start the first level
 	get_node(game_id).start_next_level()
@@ -42,10 +50,23 @@ func start_game(players : Dictionary, game_mode:String):
 #	for id in players.keys():
 #		get_node(game_id).rpc_id(id, "spawn_players")
 
+func start_offline_game(player_data:Dictionary):
+	var hole_sequence = 'default'
+	
+	var game_id = UUID.NewID()
+	var players = {0:player_data}
+	
+	var game = OFFLINE_GAME_INSTANCE.instance()
+	game.init(game_id, players, HOLE_SEQUENCES[hole_sequence])
+	self.add_child(game)
+	
+	get_node(game_id).start_next_level()
+
 puppetsync func srv_start_game(players : Dictionary, game_id:String,
-level_sequence: String = "default", game_mode:String = "free-for-all"):
+level_sequence: String = "default", game_mode:String = "free-for-all",
+collisions:bool = false):
 	var game = GAME_INSTANCE.instance()
-	game.init(game_id, players, HOLE_SEQUENCES[level_sequence], game_mode)
+	game.init(game_id, players, HOLE_SEQUENCES[level_sequence], game_mode, collisions)
 	self.add_child(game)
 	if !is_network_master():
 		visible = true

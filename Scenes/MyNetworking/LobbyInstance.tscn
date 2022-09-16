@@ -1,4 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Fonts/DefaultTheme24.tres" type="Theme" id=1]
+[ext_resource path="res://Fonts/DefaultTheme16.tres" type="Theme" id=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
@@ -8,6 +11,7 @@ var max_players:int = 24
 
 var owner_id:int = -1
 var game_mode = 'turns'
+var collisions = false
 
 var players:Dictionary = {}
 var my_data = {'name': null, 'transform': null}
@@ -20,6 +24,7 @@ func _ready():
 	if owner_id == get_tree().get_network_unique_id():
 		$StartGame.disabled = false
 		$GameMode.disabled = false
+		$Collisions.disabled = false
 
 remotesync func create_player(other_player_id, data):
 	players[other_player_id] = data
@@ -60,6 +65,7 @@ puppet func change_owner(new_id):
 	if owner_id == get_tree().get_network_unique_id():
 		$StartGame.disabled = false
 		$GameMode.disabled = false
+		$Collisions.disabled = false
 
 remotesync func erase_player(other_player_id):
 	if players.has(other_player_id):
@@ -86,7 +92,7 @@ func _on_StartGame_pressed():
 master func startGame():
 	# verify room owner started game
 	if get_tree().get_rpc_sender_id() == owner_id:
-		GameService.start_game(players, game_mode)
+		GameService.start_game(players, game_mode, collisions)
 		
 		# remove lobby
 		for id in players.keys():
@@ -110,8 +116,27 @@ remotesync func change_gamemode(new_mode:String):
 	match new_mode:
 		\"turns\":
 			$GameMode.text = \"Game Mode: Turns\"
+			$Collisions.hide()
 		\"free-for-all\":
 			$GameMode.text = \"Game Mode: Free-for-All\"
+			$Collisions.show()
+
+
+func _on_Collisions_pressed():
+	if owner_id != get_tree().get_network_unique_id():
+		return
+	change_collisions(!collisions)
+	for id in players.keys() + [1]:
+		if id != get_tree().get_network_unique_id():
+			rpc_id(id, \"change_collisions\", collisions)
+
+remotesync func change_collisions(new_val:bool):
+	collisions = new_val
+	match new_val:
+		true:
+			$Collisions.text = \"Player Collisions: On\"
+		false:
+			$Collisions.text = \"Player Collisions: Off\"
 "
 
 [node name="LobbyInstance" type="Control"]
@@ -122,30 +147,48 @@ script = SubResource( 1 )
 [node name="PlayerPanelHolder" type="HFlowContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 40.0
+margin_top = 40.0
+custom_constants/vseparation = 8
+custom_constants/hseparation = 16
 
 [node name="StartGame" type="Button" parent="."]
-margin_left = 526.0
-margin_top = 477.0
-margin_right = 719.0
-margin_bottom = 551.0
+margin_left = 960.0
+margin_top = 616.0
+margin_right = 1229.0
+margin_bottom = 690.0
+theme = ExtResource( 1 )
 disabled = true
 text = "Start Game"
 
 [node name="LeaveLobby" type="Button" parent="."]
-margin_left = 304.0
-margin_top = 477.0
-margin_right = 497.0
-margin_bottom = 551.0
+margin_left = 65.0
+margin_top = 627.0
+margin_right = 321.0
+margin_bottom = 691.0
+theme = ExtResource( 1 )
 text = "Leave Lobby"
 
 [node name="GameMode" type="Button" parent="."]
-margin_left = 367.0
-margin_top = 408.0
-margin_right = 656.0
-margin_bottom = 456.0
+margin_left = 476.0
+margin_top = 610.0
+margin_right = 795.0
+margin_bottom = 652.0
+theme = ExtResource( 2 )
 disabled = true
 text = "Game Mode: Turns"
+
+[node name="Collisions" type="Button" parent="."]
+visible = false
+margin_left = 476.0
+margin_top = 662.0
+margin_right = 795.0
+margin_bottom = 704.0
+theme = ExtResource( 2 )
+disabled = true
+text = "Player Collisions: Off"
 
 [connection signal="pressed" from="StartGame" to="." method="_on_StartGame_pressed"]
 [connection signal="pressed" from="LeaveLobby" to="." method="_on_LeaveLobby_pressed"]
 [connection signal="pressed" from="GameMode" to="." method="_on_GameMode_pressed"]
+[connection signal="pressed" from="Collisions" to="." method="_on_Collisions_pressed"]

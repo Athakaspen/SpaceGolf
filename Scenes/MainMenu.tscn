@@ -1,54 +1,128 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/MainMenu.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/ball.png" type="Texture" id=2]
+[ext_resource path="res://Resources/TrailGradient.tres" type="Gradient" id=3]
+[ext_resource path="res://Fonts/DefaultTheme24.tres" type="Theme" id=4]
+[ext_resource path="res://Fonts/DefaultTheme16.tres" type="Theme" id=5]
+[ext_resource path="res://Fonts/Spaced OTF.otf" type="DynamicFontData" id=6]
+
+[sub_resource type="DynamicFont" id=2]
+size = 164
+font_data = ExtResource( 6 )
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.483766, 0.554545 ), -0.228571, -0.228571, 0, 0, Vector2( 1, 0.309091 ), -0.684445, 0.0, 0, 0 ]
 
 [node name="MainMenu" type="Control"]
 script = ExtResource( 1 )
 
+[node name="Galactigolf" type="Label" parent="."]
+margin_left = 82.0
+margin_top = 51.0
+margin_right = 1218.0
+margin_bottom = 235.0
+custom_fonts/font = SubResource( 2 )
+text = "GalactiGolf"
+align = 1
+
 [node name="Offline" type="Button" parent="."]
-margin_left = 386.0
-margin_top = 107.0
-margin_right = 576.0
-margin_bottom = 173.0
+margin_left = 260.0
+margin_top = 249.0
+margin_right = 654.0
+margin_bottom = 341.0
+theme = ExtResource( 4 )
 text = "Play Offline"
 
 [node name="Online" type="Button" parent="."]
-margin_left = 247.0
-margin_top = 365.0
-margin_right = 713.0
-margin_bottom = 473.0
+margin_left = 223.0
+margin_top = 403.0
+margin_right = 689.0
+margin_bottom = 511.0
+theme = ExtResource( 4 )
 text = "PLAY ONLINE"
 
 [node name="Credits" type="Button" parent="."]
-margin_left = 246.0
-margin_top = 509.0
-margin_right = 712.0
-margin_bottom = 570.0
+margin_left = 347.0
+margin_top = 574.0
+margin_right = 561.0
+margin_bottom = 635.0
+theme = ExtResource( 4 )
 text = "Credits"
 
-[node name="EnterName" type="LineEdit" parent="."]
-margin_left = 340.0
-margin_top = 319.0
-margin_right = 611.0
-margin_bottom = 343.0
-align = 1
-placeholder_text = "Enter Name"
+[node name="Fullscreen" type="Button" parent="."]
+visible = false
+margin_left = 867.0
+margin_top = 477.0
+margin_right = 1093.0
+margin_bottom = 536.0
+theme = ExtResource( 5 )
+text = "Fullscreen"
 
 [node name="EnterIP" type="LineEdit" parent="."]
-margin_left = 340.0
-margin_top = 288.0
-margin_right = 530.0
-margin_bottom = 312.0
+margin_left = 314.0
+margin_top = 371.0
+margin_right = 504.0
+margin_bottom = 395.0
 align = 2
 placeholder_text = "(optional) IP Address"
 
 [node name="EnterPort" type="LineEdit" parent="."]
-margin_left = 538.0
-margin_top = 288.0
-margin_right = 611.0
-margin_bottom = 312.0
+margin_left = 512.0
+margin_top = 371.0
+margin_right = 585.0
+margin_bottom = 395.0
 placeholder_text = "Port"
+
+[node name="PlayerInfo" type="Panel" parent="."]
+margin_left = 807.0
+margin_top = 269.0
+margin_right = 1067.0
+margin_bottom = 623.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Sprite" type="Sprite" parent="PlayerInfo"]
+position = Vector2( 130, 83 )
+scale = Vector2( 1.04687, 1.04687 )
+z_index = 2
+texture = ExtResource( 2 )
+
+[node name="Trail" type="Line2D" parent="PlayerInfo"]
+position = Vector2( 48, 13 )
+points = PoolVector2Array( 81, 71, 129, 70, 178, 68, 203, 65, 232, 60, 262, 60, 290, 65, 315, 64, 339, 62, 361, 51, 380, 46, 403, 46 )
+width = 100.0
+width_curve = SubResource( 1 )
+gradient = ExtResource( 3 )
+
+[node name="ChangeColor" type="Button" parent="PlayerInfo"]
+margin_left = 38.0
+margin_top = 175.0
+margin_right = 207.0
+margin_bottom = 207.0
+theme = ExtResource( 5 )
+text = "Change Color"
+
+[node name="ChangeTrail" type="Button" parent="PlayerInfo"]
+margin_left = 45.0
+margin_top = 230.0
+margin_right = 204.0
+margin_bottom = 262.0
+theme = ExtResource( 5 )
+text = "Change Trail"
+
+[node name="EnterName" type="LineEdit" parent="PlayerInfo"]
+margin_left = 28.0
+margin_top = 298.0
+margin_right = 225.0
+margin_bottom = 328.0
+theme = ExtResource( 5 )
+align = 1
+placeholder_text = "Enter Name"
 
 [connection signal="pressed" from="Offline" to="." method="_on_Offline_pressed"]
 [connection signal="pressed" from="Online" to="." method="_on_Online_pressed"]
 [connection signal="pressed" from="Credits" to="." method="_on_Credits_pressed"]
+[connection signal="pressed" from="Fullscreen" to="." method="_on_Fullscreen_pressed"]
+[connection signal="pressed" from="PlayerInfo/ChangeColor" to="." method="_on_ChangeColor_pressed"]
+[connection signal="pressed" from="PlayerInfo/ChangeTrail" to="." method="_on_ChangeTrail_pressed"]

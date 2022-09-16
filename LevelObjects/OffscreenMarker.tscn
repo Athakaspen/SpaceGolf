@@ -33,13 +33,16 @@ func set_marker_rotation(cam_center):
 "
 
 [node name="Marker" type="Node2D"]
+z_index = 20
 script = SubResource( 1 )
 
 [node name="Arrow" type="Sprite" parent="."]
+scale = Vector2( 0.408, 0.953 )
 texture = ExtResource( 1 )
 offset = Vector2( -48, 0 )
 
 [node name="Icon" type="Sprite" parent="Arrow"]
+visible = false
 position = Vector2( -60, 1 )
 scale = Vector2( 0.46875, 0.46875 )
 texture = ExtResource( 2 )

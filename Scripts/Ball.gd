@@ -14,8 +14,8 @@ const GROUNDED_WAIT_TIME = 0.2
 
 var MAX_STRENGTH = 800
 var MIN_STRENGTH = 200
-var AIM_DIST_SCALE = 1.8
-var LINE_SCALE = 0.5
+var AIM_DIST_SCALE = 2.5
+var LINE_SCALE = 0.42
 var TRAIL_LENGTH = 40
 var FLIGHT_TIME := 5.0 # time the ball can fly until turn changes
 
@@ -31,6 +31,7 @@ func _ready():
 	$Nametag.set_as_toplevel(true)
 	set_process_input(is_network_master())
 	trajline.visible = is_network_master()
+	if is_network_master() and game_mode=='free-for-all': z_index += 5
 	trail.set_as_toplevel(true)
 	GAME = $"../.."
 
@@ -103,6 +104,7 @@ func _physics_process(_delta):
 
 # Called by game instance to start our turn
 func start_turn(dur:float = 10.0):
+	self.z_index += 1
 	turnTimer.start(dur)
 	isMyTurn = true
 	$Trail.show()
@@ -116,6 +118,7 @@ func start_postturn(dur:float):
 
 puppet func pup_start_turn():
 	isMyTurn = true
+	self.z_index += 1
 	$Trail.show()
 	trajline.show()
 	GAME.camera.focus = self
@@ -141,6 +144,12 @@ func setName(name : String) -> void:
 	$Nametag.text = name
 func setColor(color : Color) -> void:
 	$Sprite.modulate = color
+func setSprite(texture : Texture) -> void:
+	$Sprite.texture = texture
+func setTrail(grad : Gradient) -> void:
+	$Trail.gradient = grad
+func setCollisions(enabled:bool) -> void:
+	set_collision_mask_bit(1, enabled)
 
 func start_win_animation(dur:float):
 #	print("Tweening")
@@ -170,6 +179,8 @@ func on_win():
 		trail.hide()
 		trajline.hide()
 		$Nametag.hide()
+		self.set_collision_mask_bit(1, false) # no collision
+		self.set_collision_layer_bit(1, false) # no collision
 		GAME.rpc_local(self, "pup_hide_self")
 		start_postturn(0.5)
 
@@ -178,6 +189,8 @@ puppet func pup_hide_self():
 	trail.hide()
 	trajline.hide()
 	$Nametag.hide()
+	self.set_collision_mask_bit(1, false)
+	self.set_collision_layer_bit(1, false) # no collision
 
 # Functions for checking grounded state
 var curPlanet
@@ -212,6 +225,7 @@ func _on_Timer_timeout():
 # Called when a player's turn ends without putting
 func _on_TurnTimer_timeout():
 #	print("no hit")
+	GAME.log_hit(get_tree().get_network_unique_id())
 	start_postturn(0.5)
 	GAME.rpc_local(self, "hide_trajline")
 

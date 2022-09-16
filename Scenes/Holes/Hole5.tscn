@@ -1,0 +1,144 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://LevelObjects/Planet_Orbit.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/hiicmoon.png" type="Texture" id=2]
+[ext_resource path="res://LevelObjects/Planet_Static.tscn" type="PackedScene" id=3]
+[ext_resource path="res://LevelObjects/Goal.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Fonts/DefaultTheme24.tres" type="Theme" id=5]
+
+[node name="LEVEL" type="Node2D"]
+
+[node name="SpawnPoint" type="Position2D" parent="."]
+position = Vector2( -595, 109 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="SpawnPoint"]
+modulate = Color( 0.992157, 0, 1, 0.270588 )
+scale = Vector2( 0.0166667, 0.0166667 )
+texture = ExtResource( 2 )
+
+[node name="LevelObjects" type="Node2D" parent="."]
+
+[node name="Planet_Static" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 589, 254 )
+density = 1.2
+radius = 82.0
+setSprite = 2
+
+[node name="Planet_Static5" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 1294, -368 )
+density = 1.2
+radius = 82.0
+setSprite = 7
+
+[node name="Planet_Static6" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 1169, -910 )
+radius = 146.0
+setSprite = 2
+
+[node name="Planet_Static2" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 695, -592 )
+density = 1.2
+radius = 66.0
+setSprite = 3
+
+[node name="Planet_Orbit" parent="LevelObjects/Planet_Static2" instance=ExtResource( 1 )]
+position = Vector2( 83.5128, -124.602 )
+density = 4.1
+radius = 36.0
+falloff = 0.014
+dist = 150.0
+clockwise = false
+move_in_editor = true
+
+[node name="Planet_Static4" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( -497, -748 )
+density = 1.2
+radius = 66.0
+
+[node name="Planet_Static3" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 381, -268 )
+density = 1.5
+radius = 40.0
+
+[node name="Planet_Static8" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 11, 73 )
+radius = 108.0
+setSprite = 3
+
+[node name="Planet_Orbit" parent="LevelObjects/Planet_Static8" instance=ExtResource( 1 )]
+position = Vector2( -102.343, -228.092 )
+density = 2.9
+radius = 56.0
+falloff = 0.012
+speed = 50.0
+move_in_editor = true
+
+[node name="Planet_Static13" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( -973, -719 )
+density = 1.2
+radius = 102.0
+setSprite = 2
+
+[node name="Planet_Static15" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 812, -173 )
+density = 1.2
+radius = 102.0
+
+[node name="Planet_Static16" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 47, -603 )
+density = 1.2
+radius = 102.0
+setSprite = 2
+
+[node name="Planet_Static9" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( -1015, -76 )
+radius = 92.0
+falloff = 0.011
+
+[node name="Planet_Static14" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 324, -884 )
+radius = 128.0
+falloff = 0.011
+setSprite = 7
+
+[node name="Planet_Static10" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( -555, 204 )
+radius = 92.0
+setSprite = 7
+
+[node name="Planet_Static11" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( 117, 533 )
+density = 1.2
+radius = 68.0
+setSprite = 2
+
+[node name="Planet_Static12" parent="LevelObjects" instance=ExtResource( 3 )]
+position = Vector2( -531, -293 )
+radius = 128.0
+setSprite = 3
+
+[node name="Planet_Orbit" parent="LevelObjects/Planet_Static12" instance=ExtResource( 1 )]
+position = Vector2( 139.188, -207.67 )
+density = 2.9
+radius = 56.0
+falloff = 0.012
+clockwise = false
+move_in_editor = true
+
+[node name="Goal" parent="LevelObjects" instance=ExtResource( 4 )]
+position = Vector2( 1029, -523 )
+grav = 800.0
+
+[node name="CameraPos" type="Camera2D" parent="."]
+position = Vector2( 1024, -529 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = -608.0
+margin_top = 193.0
+margin_right = -497.0
+margin_bottom = 221.0
+theme = ExtResource( 5 )
+text = "Hole 5"

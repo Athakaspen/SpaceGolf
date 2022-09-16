@@ -1,0 +1,91 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Fonts/DefaultTheme24.tres" type="Theme" id=1]
+[ext_resource path="res://Fonts/DefaultTheme16.tres" type="Theme" id=2]
+[ext_resource path="res://Fonts/Elemental End.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+
+onready var winnerText = $Winner
+onready var list = $List
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	GameService.visible = false
+	match NetworkManager.result_gamemode:
+		'turns':
+			update_scores(NetworkManager.result_players, NetworkManager.result_scores)
+		'free-for-all':
+			update_scores(NetworkManager.result_players, NetworkManager.result_times)
+		'offline':
+			var players = NetworkManager.result_players
+			var times = NetworkManager.result_times
+			var scores = NetworkManager.result_scores
+			winnerText.text = \"Strokes: \" + str(scores.values()[0])
+			list.text = \"Time: \" + str(stepify(times.values()[0], 0.001))
+
+
+func update_scores(players:Dictionary, player_scores:Dictionary):
+	var scoretexts = []
+	for id in player_scores.keys():
+		scoretexts.append([player_scores[id], \"%s: %s\\n\" % [players[id][\"name\"], stepify(player_scores[id], 0.01)]])
+	scoretexts.sort_custom(MyCustomSorter, 'sort_ascending')
+	var text = \"\"
+	for entry in scoretexts:
+		text += entry[1]
+	list.text = text
+	winnerText.text = scoretexts[0][1].split(\":\")[0] + \" Wins!\"
+
+class MyCustomSorter:
+	static func sort_ascending(a, b):
+		if a[0] < b[0]:
+			return true
+		return false
+
+
+func _on_MainMenu_pressed():
+# warning-ignore:return_value_discarded
+	get_tree().change_scene(\"res://Scenes/MainMenu.tscn\")
+"
+
+[sub_resource type="DynamicFont" id=2]
+size = 64
+font_data = ExtResource( 3 )
+
+[node name="WinScreen" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="Winner" type="Label" parent="."]
+margin_left = 151.0
+margin_top = 55.0
+margin_right = 1136.0
+margin_bottom = 151.0
+theme = ExtResource( 2 )
+custom_fonts/font = SubResource( 2 )
+text = "XXX Wins!"
+align = 1
+
+[node name="List" type="Label" parent="."]
+margin_left = 79.0
+margin_top = 158.0
+margin_right = 1206.0
+margin_bottom = 613.0
+theme = ExtResource( 1 )
+text = "Everyone
+else
+too
+i
+guess"
+align = 1
+
+[node name="MainMenu" type="Button" parent="."]
+margin_left = 520.0
+margin_top = 633.0
+margin_right = 767.0
+margin_bottom = 694.0
+theme = ExtResource( 1 )
+text = "Main Menu"
+
+[connection signal="pressed" from="MainMenu" to="." method="_on_MainMenu_pressed"]

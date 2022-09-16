@@ -1,36 +1,84 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/Credits.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/DefaultTheme24.tres" type="Theme" id=2]
+[ext_resource path="res://Sprites/Fredbot.png" type="Texture" id=3]
+[ext_resource path="res://Fonts/ElementalEnd36.tres" type="DynamicFont" id=4]
 
 [node name="Credits" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="Label" type="Label" parent="."]
-margin_left = 457.0
-margin_top = 64.0
-margin_right = 551.0
-margin_bottom = 78.0
-text = "By Athakaspen"
+[node name="By Atha" type="Label" parent="."]
+margin_left = 376.0
+margin_top = 73.52
+margin_right = 964.0
+margin_bottom = 116.52
+theme = ExtResource( 2 )
+custom_fonts/font = ExtResource( 4 )
+text = "A  Game  By  Athakaspen"
 
-[node name="Label2" type="Label" parent="."]
-margin_left = 456.0
-margin_top = 116.0
-margin_right = 550.0
-margin_bottom = 130.0
-text = "Following networking tutorials by:
-Urodela Games (AWS)
-NovemberDev (lobby network system)
+[node name="For a jam" type="Label" parent="."]
+margin_left = 323.0
+margin_top = 154.52
+margin_right = 913.0
+margin_bottom = 249.52
+theme = ExtResource( 2 )
+text = "Made in One week for the
+S&T Fall 2022 Game Jam"
+align = 1
+
+[node name="Networking" type="Label" parent="."]
+margin_left = 128.0
+margin_top = 275.0
+margin_right = 833.0
+margin_bottom = 338.0
+theme = ExtResource( 2 )
+custom_fonts/font = ExtResource( 4 )
+text = "Networking help from:"
+
+[node name="Credits" type="Label" parent="."]
+margin_left = 131.0
+margin_top = 334.0
+margin_right = 789.0
+margin_bottom = 561.0
+theme = ExtResource( 2 )
+text = "Urodela Games
+NovemberDev
 Rainware
-Linko
+Linko"
 
-Additional sources:
-Game Endeavor (offscreen warnings)"
+[node name="AdditionalSources" type="Label" parent="."]
+margin_left = 521.0
+margin_top = 379.0
+margin_right = 1159.0
+margin_bottom = 461.0
+theme = ExtResource( 2 )
+custom_fonts/font = ExtResource( 4 )
+text = "Additional sources:"
+align = 2
+
+[node name="Credits2" type="Label" parent="."]
+margin_left = 516.0
+margin_top = 440.0
+margin_right = 1154.0
+margin_bottom = 667.0
+theme = ExtResource( 2 )
+text = "Game Endeavor (offscreen warnings)
+Kenney.nl: Planet art
+Bonsaiheldin: Parallax stars"
+align = 2
 
 [node name="Button" type="Button" parent="."]
-margin_left = 437.0
-margin_top = 470.0
-margin_right = 696.0
-margin_bottom = 516.0
+margin_left = 469.0
+margin_top = 584.0
+margin_right = 781.0
+margin_bottom = 675.0
+theme = ExtResource( 2 )
 text = "Back"
+
+[node name="Fredbot" type="Sprite" parent="."]
+position = Vector2( 305, 98.52 )
+scale = Vector2( 0.264, 0.264 )
+texture = ExtResource( 3 )
 
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
