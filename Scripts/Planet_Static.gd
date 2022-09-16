@@ -35,7 +35,8 @@ var sprites = [
 ]
 func set_sprite(new_val):
 	setSprite = new_val
-	if Engine.editor_hint:
+#	if Engine.editor_hint:
+	if get_node_or_null("Sprite"):
 		$Sprite.texture = load(sprites[new_val])
 
 func update_children():
@@ -55,6 +56,8 @@ func _ready():
 #	if Engine.editor_hint:
 	$PlanetCollisionShape.shape = CircleShape2D.new()
 	update_children()
+	if !Engine.editor_hint:
+		set_sprite(setSprite)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

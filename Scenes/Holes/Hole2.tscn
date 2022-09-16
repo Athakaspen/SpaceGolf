@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Fonts/DefaultTheme16.tres" type="Theme" id=1]
+[ext_resource path="res://Fonts/DefaultTheme24.tres" type="Theme" id=1]
 [ext_resource path="res://Sprites/hiicmoon.png" type="Texture" id=2]
 [ext_resource path="res://LevelObjects/Planet_Static.tscn" type="PackedScene" id=3]
 [ext_resource path="res://LevelObjects/Goal.tscn" type="PackedScene" id=4]
@@ -66,10 +66,10 @@ radius = 44.0
 setSprite = 9
 
 [node name="Planet_Static19" parent="LevelObjects" instance=ExtResource( 3 )]
-position = Vector2( 567, -423 )
+position = Vector2( 567, -330 )
 density = 2.0
 radius = 44.0
-setSprite = 10
+setSprite = 9
 
 [node name="Planet_Static20" parent="LevelObjects" instance=ExtResource( 3 )]
 position = Vector2( 1975, -136 )
@@ -146,9 +146,9 @@ grav = 800.0
 position = Vector2( 1503, 393 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = 208.0
-margin_top = 477.0
-margin_right = 282.0
-margin_bottom = 497.0
+margin_left = 187.0
+margin_top = 475.0
+margin_right = 298.0
+margin_bottom = 503.0
 theme = ExtResource( 1 )
 text = "Hole 2"

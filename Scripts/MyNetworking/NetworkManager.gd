@@ -7,7 +7,7 @@ const DEFAULT_IP = '127.0.0.1'
 #const DEFAULT_IP = '3.15.188.170'
 const DEFAULT_PORT = 24601
 const DEFAULT_MAX_PLAYERS = 64
-const DEFAULT_CONNECTION_TYPE = "server"
+const DEFAULT_CONNECTION_TYPE = "client"
 const SERVER_ID = 1
 
 var isConnected = false

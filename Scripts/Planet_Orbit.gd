@@ -43,7 +43,8 @@ var sprites = [
 ]
 func set_sprite(new_val):
 	setSprite = new_val
-	if Engine.editor_hint:
+#	if Engine.editor_hint:
+	if get_node_or_null("Sprite"):
 		$Sprite.texture = load(sprites[new_val])
 
 func set_start_angle(new_a):
@@ -71,6 +72,9 @@ func _ready():
 #	if Engine.editor_hint:
 	$PlanetCollisionShape.shape = CircleShape2D.new()
 	update_children()
+	if !Engine.editor_hint:
+		set_sprite(setSprite)
+	print(setSprite)
 
 
 func _physics_process(delta):
