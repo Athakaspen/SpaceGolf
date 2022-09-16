@@ -76,6 +76,7 @@ theme = ExtResource( 3 )
 text = "back"
 
 [node name="NoLobbies" type="Label" parent="."]
+visible = false
 margin_left = 552.0
 margin_top = 61.0
 margin_right = 752.0

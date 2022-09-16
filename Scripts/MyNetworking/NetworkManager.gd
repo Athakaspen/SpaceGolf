@@ -3,11 +3,11 @@ extends Node
 const VERSION_NUM = "0.1.5"
 
 # How I ran as a server on GCP:  nohup ./Godot_v3.2.1-stable_linux_server.64 --main-pack SquaresClub.pck --network_connection_type=server &
-const DEFAULT_IP = '127.0.0.1'
-#const DEFAULT_IP = '3.15.188.170'
+#const DEFAULT_IP = '127.0.0.1'
+const DEFAULT_IP = '3.15.188.170'
 const DEFAULT_PORT = 24601
 const DEFAULT_MAX_PLAYERS = 64
-const DEFAULT_CONNECTION_TYPE = "server"
+const DEFAULT_CONNECTION_TYPE = "client"
 const SERVER_ID = 1
 
 var isConnected = false

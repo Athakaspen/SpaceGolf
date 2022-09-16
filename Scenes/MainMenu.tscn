@@ -7,7 +7,7 @@
 [ext_resource path="res://Fonts/DefaultTheme16.tres" type="Theme" id=5]
 
 [sub_resource type="Curve" id=1]
-_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.483766, 0.554545 ), -0.228571, -0.228571, 0, 0, Vector2( 1, 0.0090909 ), -3.2, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.483766, 0.554545 ), -0.228571, -0.228571, 0, 0, Vector2( 1, 0.309091 ), -0.684445, 0.0, 0, 0 ]
 
 [node name="MainMenu" type="Control"]
 script = ExtResource( 1 )
@@ -76,7 +76,7 @@ texture = ExtResource( 2 )
 
 [node name="Trail" type="Line2D" parent="PlayerInfo"]
 position = Vector2( 48, 13 )
-points = PoolVector2Array( 81, 71, 132, 73, 178, 68, 234, 63, 290, 69, 334, 57, 383, 48 )
+points = PoolVector2Array( 81, 71, 129, 70, 178, 68, 203, 65, 232, 60, 262, 60, 290, 65, 315, 64, 339, 62, 361, 51, 380, 46, 403, 46 )
 width = 100.0
 width_curve = SubResource( 1 )
 gradient = ExtResource( 3 )
