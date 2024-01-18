@@ -6,5 +6,5 @@ The game features networked multiplayer using a dedicated server instance. One s
 
 This was a single week, solo project, so there are relatively few comments. Sorry.
 
-- Networking code is in the Scripts/MyNetworking/ folder. NetworkManager.gd has connection initialization information.
-- Player synchronization is handled in Ball.gd
+- Networking code is in the `Scripts/MyNetworking/` folder. `NetworkManager.gd` has connection initialization information.
+- Player synchronization is handled in `Ball.gd`
